@@ -64,14 +64,14 @@ export default class RenewalStore {
     console.log({ filters: JSON.stringify(this.filters) });
   }
 
-  async fetchProducts() {
+  async fetchProducts(headers: Record<string, string>) {
     try {
       console.log({ apiUrl: this.config.apiUrl });
       const urlWithQueryString = appendFiltersToUrl(
         `${this.config.apiUrl}/products`,
         this.filters
       );
-      const response = await fetch(urlWithQueryString);
+      const response = await fetch(urlWithQueryString, headers);
       const data = await response.json();
       this.setProducts(data.products);
     } catch (error) {

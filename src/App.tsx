@@ -2,14 +2,20 @@ import Router from "./Router";
 import "./App.css";
 import { StoresProvider } from "./state";
 import { ConfigProvider } from "./config";
+import { AuthProvider } from "./modules/auth";
+import { FetcherProvider } from "./modules/fetcher";
 
 function App() {
   return (
-    <ConfigProvider>
-      <StoresProvider>
-        <Router />
-      </StoresProvider>
-    </ConfigProvider>
+    <AuthProvider>
+      <FetcherProvider>
+        <ConfigProvider>
+          <StoresProvider>
+            <Router />
+          </StoresProvider>
+        </ConfigProvider>
+      </FetcherProvider>
+    </AuthProvider>
   );
 }
 
