@@ -26,10 +26,10 @@ export const appendQueryParamsToUrl = (
   params: Record<string, string>
 ) => {
   const searchKeys = Object.keys(params);
-  const formattedUrl = new URL(url);
+  const searchParams = new URLSearchParams(url);
   searchKeys.forEach((p) => {
-    formattedUrl.searchParams.set(p, params[p]);
+    searchParams.append(p, params[p]);
   });
 
-  return formattedUrl.toString();
+  return `${url}?${searchParams.toString()}`
 };

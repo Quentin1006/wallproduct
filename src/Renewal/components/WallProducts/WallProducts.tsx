@@ -1,14 +1,12 @@
 import InfiniteScroll from "react-infinite-scroll-component";
-import LazyLoad from "react-lazy-load";
-import { SuspenseImg } from "../SuspenseImage/SuspenseImage";
+import { observer } from "mobx-react-lite";
 
-import type { Product } from "../../typings";
+import { useStore } from "../../../state";
+import { ProductCard } from "../ProductCard";
 
-type WallProductsProps = {
-  products: Product[] | undefined;
-};
+export const WallProducts = observer(() => {
+  const { products } = useStore("renewalStore")
 
-export const WallProducts = ({ products }: WallProductsProps) => {
   console.log("in WallProducts", {
     productsLen: products?.length,
     products: JSON.stringify(products),
@@ -17,6 +15,8 @@ export const WallProducts = ({ products }: WallProductsProps) => {
     return <div>No products to display</div>;
   }
   return (
+    <>
+    <h3>{products.length} Téléphones</h3>
     <InfiniteScroll
       dataLength={products.length}
       hasMore={false}
@@ -30,30 +30,10 @@ export const WallProducts = ({ products }: WallProductsProps) => {
         }}
       >
         {products.map((product) => (
-          <div
-            key={product.name}
-            style={{
-              border: "1px solid black",
-              padding: "10px",
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-              width: "calc(33% - 50px)",
-              margin: "15px",
-              borderRadius: "5%",
-            }}
-          >
-            <div>Modele : {product.name}</div>
-            <div>Marque : {product.brand}</div>
-            <LazyLoad offset={300}>
-              <SuspenseImg src={product.link} alt="telephone" width="80px" />
-            </LazyLoad>
-
-            <div>Color : {product.color}</div>
-            <div>Year : {product.year}</div>
-          </div>
+          <ProductCard product={product} key={product.name}/>
         ))}
       </div>
     </InfiniteScroll>
+    </>
   );
-};
+});

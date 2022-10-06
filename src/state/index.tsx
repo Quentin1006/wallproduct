@@ -1,16 +1,16 @@
 import { createContext, useContext } from "react";
 import { useConfig } from "../config";
 import RenewalStore from "../Renewal/store";
-import AppStore from "./app-store";
+import UiStore from "./UiStore";
 
 class RootStore {
   renewalStore;
-  appStore;
+  uiStore;
   _accessToken: string | undefined;
   constructor(config: any) {
     console.log("in rootStore constructor", { config });
     this.renewalStore = new RenewalStore(config);
-    this.appStore = new AppStore(config);
+    this.uiStore = new UiStore(config);
   }
 }
 
