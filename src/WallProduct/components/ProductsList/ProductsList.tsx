@@ -12,10 +12,10 @@ export const ProductsList = observer(() => {
     products: JSON.stringify(products),
   })
   if (!products || products.length === 0) {
-    return <div>No products to display</div>
+    return <div>No products to displfilay</div>
   }
   return (
-    <>
+    <div>
       <div style={{ padding: "15px", fontSize: "24px" }}>{products.length} Téléphones</div>
       <InfiniteScroll
         dataLength={products.length}
@@ -34,6 +34,6 @@ export const ProductsList = observer(() => {
           ))}
         </div>
       </InfiniteScroll>
-    </>
+    </div>
   )
 })

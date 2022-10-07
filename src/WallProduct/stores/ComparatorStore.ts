@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import autoBind from "auto-bind";
 import type { Product } from "../../typings";
-import { MAX_COMPARATOR_SIZE } from "../config"
+import { MAX_COMPARATOR_SIZE } from "../config/config"
 
 
 export default class ComparatorStore {

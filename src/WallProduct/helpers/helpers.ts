@@ -1,4 +1,4 @@
-import type { FilterRecord } from "../typings";
+import type { FilterRecord } from "../../typings";
 
 export const hasFilters = (filters: FilterRecord) => {
   return Object.values(filters).some((f) => f.state !== "");

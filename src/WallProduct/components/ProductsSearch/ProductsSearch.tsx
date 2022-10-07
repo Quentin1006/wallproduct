@@ -1,14 +1,14 @@
 import { useEffect } from "react"
 import { observer } from "mobx-react-lite"
 
-import { useStore } from "../state"
+import { useStore } from "../../../state"
 
-import Filters from "./components/Filters"
-import { ProductsList } from "./components/ProductsList"
+import Filters from "../Filters"
+import { ProductsList } from "../ProductsList"
 
-import { useFetcher } from "../modules/fetcher"
-import { appendFiltersToUrl } from "./helpers"
-import { FETCH_PRODUCT_URL } from "./config"
+import { useFetcher } from "../../../modules/fetcher"
+import { appendFiltersToUrl } from "../../helpers/helpers"
+import { FETCH_PRODUCT_URL } from "../../config/config"
 
 const PublicRenewal = observer(({ goBack }: any) => {
   const { products, filters, setProducts, updateFilter } = useStore("wallProductStore")
@@ -39,11 +39,13 @@ const PublicRenewal = observer(({ goBack }: any) => {
   }
 
   return (
-    <>
-      <Filters filters={filters} updateFilter={updateFilter} />
-      <hr />
-      <ProductsList />
-    </>
+    <div>
+      <div style={{ display: "flex" }}>
+        <Filters />
+        <hr />
+        <ProductsList />
+      </div>
+    </div>
   )
 })
 

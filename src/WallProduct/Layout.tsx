@@ -5,7 +5,7 @@ import { useStore } from "../state"
 import { Comparator } from "./components/Comparator"
 import AppModal from "./components/AppModal"
 
-import BackgroundPhone from "./img/background-phone.png"
+import BackgroundPhone from "./assets/background-phone.png"
 import { useEffect } from "react"
 
 const Layout = observer(() => {
