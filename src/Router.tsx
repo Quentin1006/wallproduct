@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import React from "react"
 
-import RenewalLayout from "./Renewal/Layout"
-import PublicRenewal from "./Renewal/PublicRenewal"
-
+import WallProductLayout from "./WallProduct/Layout"
+import RenewalPage from "./WallProduct/RenewalPage"
+import AcquisitionPage from "./WallProduct/AcquisitionPage"
 
 const Draft = ({ subtitle, goBack }: any) => {
   return (
@@ -16,11 +16,11 @@ const Draft = ({ subtitle, goBack }: any) => {
 
 const Router: React.FC = () => (
   <>
-    <BrowserRouter basename="renouvellement">
+    <BrowserRouter basename="telephones">
       <Routes>
-        <Route path="/" element={<RenewalLayout />}>
-          <Route index element={<PublicRenewal goBack="/pro" />} />
-          <Route path="/pro" element={<Draft subtitle="PRO" goBack="/" />} />
+        <Route path="/" element={<WallProductLayout />}>
+          <Route path="/renouvellement" element={<RenewalPage />} />
+          <Route path="/acquisition" element={<AcquisitionPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

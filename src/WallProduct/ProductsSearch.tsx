@@ -1,23 +1,20 @@
 import { useEffect } from "react"
 import { observer } from "mobx-react-lite"
+
 import { useStore } from "../state"
 
 import Filters from "./components/Filters"
-import WallProducts from "./components/WallProducts"
-import Renewal from "./Renewal"
-import AppModal from "./components/AppModal"
+import { ProductsList } from "./components/ProductsList"
+
 import { useFetcher } from "../modules/fetcher"
 import { appendFiltersToUrl } from "./helpers"
-import { Comparator } from "./components/Comparator"
+import { FETCH_PRODUCT_URL } from "./config"
 
 const PublicRenewal = observer(({ goBack }: any) => {
-  const { products, filters, setProducts, updateFilter } = useStore("renewalStore")
-  const { setTitle, title } = useStore("uiStore")
-  const { isError, error, data, isLoading, refetch } = useFetcher("/products")
-
-  useEffect(() => {
-    setTitle("Public Renewal")
-  }, [])
+  const { products, filters, setProducts, updateFilter } = useStore("wallProductStore")
+  const { isError, error, data, isLoading, refetch } = useFetcher(FETCH_PRODUCT_URL, {
+    disabled: false,
+  })
 
   useEffect(() => {
     if (data) {
@@ -27,7 +24,7 @@ const PublicRenewal = observer(({ goBack }: any) => {
 
   useEffect(() => {
     if (data) {
-      const urlWithFilters = appendFiltersToUrl("/products", filters)
+      const urlWithFilters = appendFiltersToUrl(FETCH_PRODUCT_URL, filters)
       console.log({ urlWithFilters })
       refetch(urlWithFilters)
     }
@@ -43,13 +40,10 @@ const PublicRenewal = observer(({ goBack }: any) => {
 
   return (
     <>
-      <Renewal subtitle="PUBLIC" goBack={goBack} />
       <hr />
       <Filters filters={filters} updateFilter={updateFilter} />
       <hr />
-      <WallProducts />
-      <Comparator />
-      <AppModal />
+      <ProductsList />
     </>
   )
 })

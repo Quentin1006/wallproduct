@@ -2,7 +2,7 @@ import LazyLoad from "react-lazy-load"
 
 import { SuspenseImg } from "../SuspenseImage/SuspenseImage"
 
-import type { Product } from "../../typings"
+import type { Product } from "../../../typings"
 import { useStore } from "../../../state"
 
 export type ProductProps = {

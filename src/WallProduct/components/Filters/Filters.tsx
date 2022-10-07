@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import { Fragment, useEffect, useRef, useState } from "react"
 
-import type { FilterRecord } from "../../typings"
+import type { FilterRecord } from "../../../typings"
 import TextInputFilter from "./TextInputFilter"
 
 type FilterProps = {
@@ -26,7 +26,7 @@ export const Filters = observer(({ filters, updateFilter }: FilterProps) => {
           default:
             return (
               <TextInputFilter
-                key={filter.label}  
+                key={filter.label}
                 ref={(el) => (itemsRef.current[idx] = el)}
                 filter={filter}
                 onUpdateFilter={(label: string, value: string) => {

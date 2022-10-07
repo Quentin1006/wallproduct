@@ -1,10 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import autoBind from "auto-bind";
 
-import type { FilterRecord, Product } from "./typings";
+import type { FilterRecord, Product } from "../typings";
 import { appendFiltersToUrl, hasFilters } from "./helpers";
 
-export default class RenewalStore {
+export default class WallProductStore {
   config;
   constructor(config: any) {
     console.log("creating store");
@@ -14,7 +14,7 @@ export default class RenewalStore {
   }
   isLoading = true;
   isError = false;
-  name = "RenewalStore";
+  name = "wallProductStore";
   filters: FilterRecord = {
     brand: {
       label: "brand",
