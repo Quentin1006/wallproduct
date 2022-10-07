@@ -6,26 +6,63 @@ import { Comparator } from "./components/Comparator"
 import AppModal from "./components/AppModal"
 
 import BackgroundPhone from "./img/background-phone.png"
+import { useEffect } from "react"
 
 const Layout = observer(() => {
-  const { title } = useStore("uiStore")
+  const { title, selectedMenu, setSelectedMenu } = useStore("uiStore")
+
+  useEffect(() => {
+    if (!selectedMenu) {
+    }
+  }, [])
 
   return (
     <>
       <div
-        style={{ backgroundColor: "#0065af", color: "white", fontSize: "28px", padding: "20px" }}
+        style={{
+          backgroundColor: "#0065af",
+          padding: "20px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
       >
-        {title}
-      </div>
-      <img src={BackgroundPhone} width="100%" height="300px" />
-      <div style={{ display: "flex", justifyContent: "flex-start" }}>
-        <div style={{ padding: "10px", border: "1px solid #0065a" }}>
-          <Link to="/acquisition">Acquisition</Link>
+        <div style={{ color: "white", fontSize: "28px" }}>{title}</div>
+        <div style={{ display: "flex", justifyContent: "flex-start" }}>
+          <div
+            style={{
+              padding: "10px",
+            }}
+          >
+            <Link
+              to="/acquisition"
+              onClick={() => setSelectedMenu("Acquisition")}
+              style={{
+                textDecoration: "none",
+                color: selectedMenu === "Acquisition" ? "white" : "inherit",
+              }}
+            >
+              Acquisition
+            </Link>
+          </div>
+          <div style={{ padding: "10px", borderRight: "1px solid #0065a" }}>
+            <Link
+              onClick={() => setSelectedMenu("Renouvellement")}
+              style={{
+                textDecoration: "none",
+                color: selectedMenu === "Renouvellement" ? "white" : "inherit",
+              }}
+              to="/renouvellement"
+            >
+              Renouvellement
+            </Link>
+          </div>
         </div>
-        <div style={{ padding: "10px", border: "1px solid #0065a" }}>
-          <Link to="/renouvellement">Renouvellement</Link>
-        </div>
       </div>
+      <div style={{ height: "300px" }}>
+        <img src={BackgroundPhone} width="100%" height="300px" />
+      </div>
+
+      <hr />
       <Outlet />
       <Comparator />
       <AppModal />

@@ -1,3 +1,4 @@
+import autoBind from "auto-bind";
 import { makeAutoObservable } from "mobx";
 
 type ModalOpts = {
@@ -13,8 +14,9 @@ type ComparatorOpts = {
 export default class UiStore {
     config: any
     modal: ModalOpts ={ isOpen: false, title: "", content: ""}
-    comparator: ComparatorOpts = { isOpen: true}
+    comparator: ComparatorOpts = { isOpen: false}
     title = ""
+    selectedMenu = ""
     constructor(config: any) {
       this.config = config
       this.toggleComparator = this.toggleComparator.bind(this)
@@ -22,6 +24,7 @@ export default class UiStore {
       this.setTitle = this.setTitle.bind(this)
       
       makeAutoObservable(this)
+      autoBind(this)
     }
 
     setModal(isOpen: boolean, content: string = "", title: string = "") {
@@ -41,5 +44,9 @@ export default class UiStore {
 
     setTitle(newTitle: string) {
       this.title = newTitle
+    }
+
+    setSelectedMenu(newSelectedMenu: string) {
+      this.selectedMenu = newSelectedMenu
     }
 }

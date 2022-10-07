@@ -40,7 +40,6 @@ const PublicRenewal = observer(({ goBack }: any) => {
 
   return (
     <>
-      <hr />
       <Filters filters={filters} updateFilter={updateFilter} />
       <hr />
       <ProductsList />

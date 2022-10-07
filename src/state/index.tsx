@@ -1,15 +1,17 @@
 import { createContext, useContext } from "react";
 import { useConfig } from "../config";
-import WallProductStore from "../WallProduct/store"
+import WallProductStore from "../WallProduct/stores/WallProductStore"
+import ComparatorStore from "../WallProduct/stores/ComparatorStore"
 import UiStore from "./UiStore"
 
 class RootStore {
   wallProductStore
+  comparatorStore
   uiStore
-  _accessToken: string | undefined
   constructor(config: any) {
     console.log("in rootStore constructor", { config })
     this.wallProductStore = new WallProductStore(config)
+    this.comparatorStore = new ComparatorStore(config)
     this.uiStore = new UiStore(config)
   }
 }

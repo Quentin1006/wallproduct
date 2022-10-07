@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { useAuth } from "../auth";
-import { useConfig } from "../../config";
+import { createContext, useContext, useEffect, useRef, useState } from "react"
+import axios from "axios"
+import { useAuth } from "../auth"
+import { useConfig } from "../../config"
 
-export const FetcherContext = createContext({} as any);
+export const FetcherContext = createContext({} as any)
 
 export type UseFetcherOpts = {
   headers?: Record<string, string>
@@ -18,6 +18,7 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
   const { fetcher } = useContext(FetcherContext)
   const { apiUrl } = useConfig()
   const [isLoading, setLoading] = useState(true)
+  const [isFetching, setFetching] = useState(false)
   const [error, setError] = useState<any>(undefined)
   const [data, setData] = useState<any>(opts?.initialValue)
 
@@ -26,6 +27,7 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
   const fetchData = useRef(async (url: string) => {
     try {
       const absoluteUrl = isAbsoluteUrl(url) ? url : `${apiUrl}${url}`
+      setFetching(true)
       const response = await fetcher.get(absoluteUrl, {
         signal: controller.signal,
         headers: opts?.headers,
@@ -36,6 +38,7 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
       setError(error)
     }
     setLoading(false)
+    setFetching(false)
   })
 
   useEffect(() => {
@@ -44,7 +47,7 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
     }
 
     return () => {
-      controller.abort()
+      isFetching && controller.abort()
     }
   }, [])
 
@@ -74,4 +77,3 @@ export const FetcherProvider = ({ children }: any) => {
     <FetcherContext.Provider value={{ fetcher: axiosInstance }}>{children}</FetcherContext.Provider>
   )
 }
-

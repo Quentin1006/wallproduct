@@ -16,7 +16,7 @@ export const ProductsList = observer(() => {
   }
   return (
     <>
-      <h3>{products.length} Téléphones</h3>
+      <div style={{ padding: "15px", fontSize: "24px" }}>{products.length} Téléphones</div>
       <InfiniteScroll
         dataLength={products.length}
         hasMore={false}

@@ -4,16 +4,18 @@ import { SuspenseImg } from "../SuspenseImage/SuspenseImage"
 
 import type { Product } from "../../../typings"
 import { useStore } from "../../../state"
+import { observer } from "mobx-react-lite"
 
 export type ProductProps = {
   product: Product
 }
 
-export const ProductCard = ({ product }: ProductProps) => {
-  const uiStore = useStore("uiStore")
+export const ProductCard = observer(({ product }: ProductProps) => {
+  const { comparator, toggleComparator, setModal } = useStore("uiStore")
+  const { canAddProduct, addProduct } = useStore("comparatorStore")
 
   const updateModal = () => {
-    uiStore.setModal(true, `Information ${product.name}`, `Details: ${product.year}`)
+    setModal(true, `Information ${product.name}`, `Details: ${product.year}`)
   }
 
   return (
@@ -39,6 +41,18 @@ export const ProductCard = ({ product }: ProductProps) => {
       <div>Year : {product.year}</div>
       <br />
       <button onClick={updateModal}>i</button>
+      <br />
+      <button
+        onClick={() => {
+          if (!comparator.isOpen) {
+            toggleComparator()
+          }
+          addProduct(product)
+        }}
+        disabled={!canAddProduct}
+      >
+        ajouter au comparateur
+      </button>
     </div>
   )
-}
+})

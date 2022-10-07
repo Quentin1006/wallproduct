@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import autoBind from "auto-bind";
 
-import type { FilterRecord, Product } from "../typings";
-import { appendFiltersToUrl, hasFilters } from "./helpers";
+import type { FilterRecord, Product } from "../../typings";
+import { appendFiltersToUrl, hasFilters } from "../helpers";
 
 export default class WallProductStore {
   config;
