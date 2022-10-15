@@ -21,16 +21,25 @@ app.use(express.static(path.resolve(__dirname, "public")));
 
 const verifyAuth = (req, res, next) => {
   const token = req.headers["authorization"];
-  if (token !== "at-1234") {
+  if (token !== "Bearer at-1234") {
     throw new Error("UnauthorizedError");
   }
   next();
 };
 
-app.get("/user/:id", verifyAuth, (req, res) => {
+app.get("/authorize", async (req, res) => {
+  const htmlContent = await fs.promises.readFile(path.resolve(__dirname, "views/authorize.html"), "utf8")
+  res.set({"Content-Type": "text/html; charset=UTF-8"})
+  
+  res.status(200).send(htmlContent)
+})
+
+app.get("/users/:id", verifyAuth, async (req, res) => {
+  const sleep = () => new Promise(resolve => { setTimeout(resolve, 3500) })
+  await sleep()
   res.json({
-    name: "quentin",
-    lastname: "sahal",
+    name: "Quentin",
+    lastname: "SAHAL",
     age: 31,
   });
 });
@@ -44,21 +53,32 @@ app.get("/products", (req, res) => {
 
   const products = db.filter((p) => {
     let isMatch = false;
+    let hasFailedFilter = false
+
+    if(query.search) {
+      isMatch = !hasFailedFilter && Boolean(p.brand.match(new RegExp(query.search, "gi")));
+      hasFailedFilter = !isMatch
+    }
 
     if (query.brand) {
-      isMatch = Boolean(p.brand.match(new RegExp(query.brand, "gi")));
+      const brandsSelected = query.brand.split(",")
+      isMatch = !hasFailedFilter && brandsSelected.some((brand) => Boolean(p.brand.match(new RegExp(brand, "gi"))))
+      hasFailedFilter = !isMatch
     }
 
     if (query.name) {
-      isMatch = Boolean(p.name.match(new RegExp(query.name, "gi")));
+      isMatch = !hasFailedFilter && Boolean(p.name.match(new RegExp(query.name, "gi")));
+      hasFailedFilter = !isMatch
     }
 
     if (query.year) {
-      isMatch = p.year === Number(query.year);
+      isMatch = !hasFailedFilter && p.year === Number(query.year);
+      hasFailedFilter = !isMatch
     }
 
     if (query.color) {
-      isMatch = Boolean(p.color.match(new RegExp(query.color, "gi")));
+      isMatch = !hasFailedFilter && Boolean(p.color.match(new RegExp(query.color, "gi")));
+      hasFailedFilter = !isMatch
     }
 
     return isMatch;

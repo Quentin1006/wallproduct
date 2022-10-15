@@ -1,27 +1,27 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import React from "react"
 
-import RenewalLayout from "./Renewal/Layout";
-import PublicRenewal from "./Renewal/PublicRenewal";
-
-const Draft = ({ subtitle, goBack }: any) => {
-  return (
-    <>
-      <div>Work in progress : {subtitle}</div>
-      <Link to={goBack}>Go back</Link>
-    </>
-  );
-};
+import { WallProductLayout, RenewalPage, AcquisitionPage } from "@modules/WallProduct"
+import { ProtectedRoute } from "./shared/auth"
 
 const Router: React.FC = () => (
-  <BrowserRouter basename="renouvellement">
-    <Routes>
-      <Route path="/" element={<RenewalLayout />}>
-        <Route index element={<PublicRenewal goBack="/pro" />} />
-        <Route path="/pro" element={<Draft subtitle="PRO" goBack="/" />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
-);
+  <>
+    <BrowserRouter basename="telephones">
+      <Routes>
+        <Route path="/" element={<WallProductLayout />}>
+          <Route path="/renouvellement" element={<RenewalPage />} />
+          <Route
+            path="/acquisition"
+            element={
+              <ProtectedRoute>
+                <AcquisitionPage />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </>
+)
 
-export default Router;
+export default Router

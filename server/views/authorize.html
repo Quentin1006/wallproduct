@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>Authenticate</title>
+    <style>
+      .error {
+        color: rgb(221, 37, 37);
+        border: 1px solid rgb(122, 77, 77);
+        margin-bottom: 10px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <h1>Page de connexion</h1>
+      <hr />
+      <form>
+        <div class="error">Erreur d'authentication</div>
+        <label for="id">Identifiant :</label>
+        <input type="text" placeholder="identifiant..." value="test" name="id" id="id" />
+        <br />
+        <label for="pwd">Mot de passe :</label>
+        <input
+          type="password"
+          placeholder="mot de passe..."
+          name="pwd"
+          value="password"
+          id="pwd"
+        />
+        <br />
+        <br />
+        <input type="submit" value="Se connecter" id="submit" />
+      </form>
+    </div>
+    <script>
+      const submitBtn = document.querySelector("#submit");
+      submitBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = document.querySelector("#id");
+        const pwd = document.querySelector("#pwd");
+
+        if (id.value === "test" && pwd.value === "password") {
+          const redirectUri = new URL(window.location.href).searchParams.get("redirect_uri")
+          window.location.href =
+            `${redirectUri}?access_token=at-1234&id=1&expires=${Date.now() + 3 * 60 * 1000}`;
+        } else {
+          const error = document.querySelector(".error");
+          error.style.display = "block";
+        }
+      });
+    </script>
+  </body>
+</html>
