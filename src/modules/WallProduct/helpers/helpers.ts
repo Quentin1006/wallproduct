@@ -44,3 +44,13 @@ export const appendQueryParamsToUrl = (url: string, params: Record<string, strin
 
   return `${url}?${searchParams.toString()}`
 }
+
+export const mapChoicesToState = (
+  choices: Array<string> | undefined,
+  state: string | Array<string>
+) => {
+  return (choices || []).map((choice) => ({
+    name: choice,
+    checked: state.indexOf(choice) >= 0,
+  }))
+}

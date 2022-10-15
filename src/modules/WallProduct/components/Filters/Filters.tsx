@@ -7,7 +7,7 @@ import TextInputFilter from "./TextInputFilter"
 
 // Mieux de faire des type spécifiques RadioFilter, InputFilter etc...
 export const Filters = observer(() => {
-  const { filters, brandFilterChoices, updateCheckboxFilter, updateFilter } =
+  const { filters, brandFilterChoices, colorFilterChoices, updateCheckboxFilter, updateFilter } =
     useStore("wallProductStore")
   const [focused, setFocused] = useState(0)
   const itemsRef = useRef<any>([])
@@ -34,6 +34,16 @@ export const Filters = observer(() => {
         groupKey="brand"
         choices={brandFilterChoices}
         onUpdateFilter={updateCheckboxFilter}
+        nbShow={4}
+      />
+      <hr />
+
+      <CheckboxGroupFilter
+        groupName="Couleur"
+        groupKey="color"
+        choices={colorFilterChoices}
+        onUpdateFilter={updateCheckboxFilter}
+        nbShow={2}
       />
     </div>
   )

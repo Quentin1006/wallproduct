@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx"
 import autoBind from "auto-bind"
 
 import type { FilterRecord, Product } from "typings"
-import { appendFiltersToUrl, hasFilters } from "../helpers/helpers"
+import { appendFiltersToUrl, hasFilters, mapChoicesToState } from "../helpers/helpers"
 
 export default class WallProductStore {
   config
@@ -24,13 +24,19 @@ export default class WallProductStore {
       name: "Marque",
       state: [],
       type: "checkbox",
-      choices: ["Google", "Apple", "Xiaomi", "Sony"],
+      choices: ["Google", "Apple", "Xiaomi", "Samsung", "Sony"],
     },
     price: {
       name: "Prix",
       state: [],
       type: "checkbox",
       choices: [],
+    },
+    color: {
+      name: "Couleur",
+      state: [],
+      type: "checkbox",
+      choices: ["blue", "black", "red", "white"],
     },
   }
 
@@ -46,12 +52,11 @@ export default class WallProductStore {
   }
 
   get brandFilterChoices() {
-    const resp = (this.filters.brand.choices || []).map((choice) => ({
-      name: choice,
-      checked: this.filters.brand.state.indexOf(choice) >= 0,
-    }))
+    return mapChoicesToState(this.filters.brand.choices, this.filters.brand.state)
+  }
 
-    return resp
+  get colorFilterChoices() {
+    return mapChoicesToState(this.filters.color.choices, this.filters.color.state)
   }
 
   products: Product[] | undefined
