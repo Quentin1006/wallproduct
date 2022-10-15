@@ -1,7 +1,7 @@
 import Modal from "react-modal"
-
-import { useStore } from "../../state"
 import { observer } from "mobx-react-lite"
+
+import { useStore } from "@shared/state"
 
 const AppModal = observer(() => {
   const uiStore = useStore("uiStore")
@@ -12,11 +12,11 @@ const AppModal = observer(() => {
   }
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal}>
-      <div style={{ display: "flex", justifyContent: "space-between"}}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h4>{title}</h4>
         <button onClick={closeModal}>X</button>
       </div>
-      
+
       <p>{content}</p>
     </Modal>
   )

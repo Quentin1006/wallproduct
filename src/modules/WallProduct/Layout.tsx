@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { Link, Outlet } from "react-router-dom"
-import { useStore } from "../state"
+import { useStore } from "@shared/state"
 
 import { Comparator } from "./components/Comparator"
 import AppModal from "./components/AppModal"

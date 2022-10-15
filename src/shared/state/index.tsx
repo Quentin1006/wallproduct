@@ -1,7 +1,6 @@
-import { createContext, useContext } from "react";
-import { useConfig } from "../config";
-import WallProductStore from "../WallProduct/stores/WallProductStore"
-import ComparatorStore from "../WallProduct/stores/ComparatorStore"
+import { createContext, useContext } from "react"
+import { useConfig } from "../../config"
+import { WallProductStore, ComparatorStore } from "@modules/WallProduct"
 import UiStore from "./UiStore"
 
 class RootStore {
@@ -29,4 +28,3 @@ export const useStores = () => useContext(StoresContext)
 
 export const useStore = <T extends keyof RootStore>(store: T): RootStore[T] =>
   useContext(StoresContext)[store]
-

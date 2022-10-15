@@ -1,10 +1,10 @@
-import Router from "./Router";
+import Router from "./Router"
 
-import "./App.css";
-import { StoresProvider } from "./state";
-import { ConfigProvider } from "./config";
-import { AuthProvider } from "./modules/auth";
-import { FetcherProvider } from "./modules/fetcher";
+import "./App.css"
+import { StoresProvider } from "./shared/state"
+import { ConfigProvider } from "./config"
+import { AuthProvider } from "./shared/auth"
+import { FetcherProvider } from "./shared/fetcher"
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         </ConfigProvider>
       </FetcherProvider>
     </AuthProvider>
-  );
+  )
 }
 
-export default App;
+export default App

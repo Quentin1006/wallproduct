@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import React from "react"
 
-import { WallProductLayout, RenewalPage, AcquisitionPage } from "./WallProduct"
-import { ProtectedRoute } from "./modules/auth"
+import { WallProductLayout, RenewalPage, AcquisitionPage } from "@modules/WallProduct"
+import { ProtectedRoute } from "./shared/auth"
 
 const Router: React.FC = () => (
   <>

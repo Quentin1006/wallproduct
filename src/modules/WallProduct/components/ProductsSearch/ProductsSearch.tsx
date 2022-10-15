@@ -1,17 +1,16 @@
 import { useCallback, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 
-import { useStore } from "../../../state"
+import { useStore } from "@shared/state"
 
 import Filters from "../Filters"
 import { ProductsList } from "../ProductsList"
 
-import { useAuth } from "../../../modules/auth"
-import { useFetcher } from "../../../modules/fetcher"
+import { useFetcher } from "@shared/fetcher"
 import { appendFiltersToUrl } from "../../helpers/helpers"
 import { FETCH_PRODUCT_URL, OfferType } from "../../config"
 import { ProductCard } from "../ProductCard"
-import { Product } from "../../../typings"
+import { Product } from "typings"
 import { WelcomeBox } from "../WelcomeBox"
 
 type ProductsSearchProps = {

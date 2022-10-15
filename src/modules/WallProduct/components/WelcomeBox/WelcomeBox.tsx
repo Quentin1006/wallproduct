@@ -1,5 +1,5 @@
-import { useAuth } from "../../../modules/auth"
-import { useFetcher } from "../../../modules/fetcher"
+import { useAuth } from "@shared/auth"
+import { useFetcher } from "@shared/fetcher"
 import { FETCH_USER_URL } from "../../config"
 
 export const WelcomeBox = () => {

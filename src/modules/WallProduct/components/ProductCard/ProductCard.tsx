@@ -2,8 +2,8 @@ import LazyLoad from "react-lazy-load"
 
 import { SuspenseImg } from "../SuspenseImage/SuspenseImage"
 
-import type { Product } from "../../../typings"
-import { useStore } from "../../../state"
+import type { Product } from "typings"
+import { useStore } from "@shared/state"
 import { observer } from "mobx-react-lite"
 
 export type ProductProps = {

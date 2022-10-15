@@ -1,5 +1,5 @@
 import React, { Fragment, Ref, useState } from "react"
-import { Filter } from "../../../typings"
+import { Filter } from "typings"
 
 export type TextInputFilterProps = {
   filterState: Filter
