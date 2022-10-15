@@ -3,7 +3,7 @@ import { Link, Outlet } from "react-router-dom"
 import { useStore } from "@shared/state"
 
 import { Comparator } from "./components/Comparator"
-import AppModal from "./components/AppModal"
+import { AppModal } from "./components/AppModal"
 
 import BackgroundPhone from "./assets/background-phone.png"
 import { useEffect } from "react"

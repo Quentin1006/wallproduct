@@ -18,7 +18,7 @@ export const Filters = observer(() => {
 
   return (
     <div style={{ margin: "15px 20px" }}>
-      <div style={{ fontSize: "24px", paddingBottom: "15px" }}>Filtres :</div>
+      <div style={{ fontSize: "24px", paddingBottom: "15px" }}>Filtres</div>
       <TextInputFilter
         ref={(el) => (itemsRef.current[0] = el)}
         name="search"

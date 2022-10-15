@@ -1,11 +1,18 @@
 import { useStore } from "@shared/state"
 import { observer } from "mobx-react-lite"
-import { Fragment } from "react"
+import { useEffect } from "react"
 
 export const Comparator = observer(() => {
   const { comparator, toggleComparator } = useStore("uiStore")
   const { removeProduct, list } = useStore("comparatorStore")
 
+  useEffect(() => {
+    const shouldOpenOnListChange = list.length > 0 && !comparator.isOpen
+    const shouldCloseOnListChange = list.length === 0 && comparator.isOpen
+    if (shouldOpenOnListChange || shouldCloseOnListChange) {
+      toggleComparator()
+    }
+  }, [list])
   return (
     <div
       style={{

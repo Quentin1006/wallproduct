@@ -1,22 +1,25 @@
 import LazyLoad from "react-lazy-load"
-
-import { SuspenseImg } from "../SuspenseImage/SuspenseImage"
-
+import { useEffect, useMemo, useState } from "react"
 import type { Product } from "typings"
 import { useStore } from "@shared/state"
 import { observer } from "mobx-react-lite"
 
+import { SuspenseImg } from "../SuspenseImage/SuspenseImage"
+
 export type ProductProps = {
   product: Product
+  isInComparator: boolean
 }
 
-export const ProductCard = observer(({ product }: ProductProps) => {
-  const { comparator, toggleComparator, setModal } = useStore("uiStore")
+export const ProductCard = observer(({ product, isInComparator }: ProductProps) => {
+  const { setModal } = useStore("uiStore")
   const { canAddProduct, addProduct } = useStore("comparatorStore")
 
   const updateModal = () => {
     setModal(true, `Information ${product.name}`, `Details: ${product.year}`)
   }
+
+  console.log("rendering ProductCard")
 
   return (
     <div
@@ -44,12 +47,9 @@ export const ProductCard = observer(({ product }: ProductProps) => {
       <br />
       <button
         onClick={() => {
-          if (!comparator.isOpen) {
-            toggleComparator()
-          }
           addProduct(product)
         }}
-        disabled={!canAddProduct}
+        disabled={!canAddProduct || isInComparator}
       >
         ajouter au comparateur
       </button>

@@ -2,11 +2,11 @@ import { useCallback, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 
 import { useStore } from "@shared/state"
+import { useFetcher } from "@shared/fetcher"
 
 import Filters from "../Filters"
 import { ProductsList } from "../ProductsList"
 
-import { useFetcher } from "@shared/fetcher"
 import { appendFiltersToUrl } from "../../helpers/helpers"
 import { FETCH_PRODUCT_URL, OfferType } from "../../config"
 import { ProductCard } from "../ProductCard"
@@ -19,7 +19,15 @@ type ProductsSearchProps = {
 
 const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
   const { products, filters, setProducts } = useStore("wallProductStore")
-  const useRenderProduct = useCallback((p: Product) => <ProductCard product={p} />, [])
+  const { list } = useStore("comparatorStore")
+
+  const useRenderProduct = useCallback(
+    (p: Product) => {
+      const isInComparator = list.some((element) => element.name === p.name)
+      return <ProductCard product={p} isInComparator={isInComparator} />
+    },
+    [list]
+  )
 
   const {
     isError,

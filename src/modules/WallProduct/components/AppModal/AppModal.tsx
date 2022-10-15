@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 
 import { useStore } from "@shared/state"
 
-const AppModal = observer(() => {
+export const AppModal = observer(() => {
   const uiStore = useStore("uiStore")
   const { isOpen, content, title } = uiStore.modal || {}
 
@@ -21,5 +21,3 @@ const AppModal = observer(() => {
     </Modal>
   )
 })
-
-export default AppModal

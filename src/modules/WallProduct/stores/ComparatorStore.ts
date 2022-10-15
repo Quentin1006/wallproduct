@@ -22,11 +22,12 @@ export default class ComparatorStore {
     if (!this.canAddProduct) {
       return
     }
-    this.list.push(product)
+    this.list = [...this.list, product]
   }
 
   removeProduct(productName: string) {
-    const productIndex = this.list.findIndex((product) => product.name === productName)
-    this.list.splice(productIndex, 1)
+    this.list = this.list.reduce((acc, el) => {
+      return el.name === productName ? acc : [...acc, el]
+    }, [] as Product[])
   }
 }
