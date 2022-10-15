@@ -61,7 +61,9 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
 }
 
 export const FetcherProvider = ({ children }: any) => {
-  const { accessToken } = useAuth()
+  const {
+    auth: { accessToken },
+  } = useAuth()
   const axiosInstance = axios.create()
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import React from "react"
 
 import { WallProductLayout, RenewalPage, AcquisitionPage } from "./WallProduct"
+import { ProtectedRoute } from "./modules/auth"
 
 const Router: React.FC = () => (
   <>
@@ -9,7 +10,14 @@ const Router: React.FC = () => (
       <Routes>
         <Route path="/" element={<WallProductLayout />}>
           <Route path="/renouvellement" element={<RenewalPage />} />
-          <Route path="/acquisition" element={<AcquisitionPage />} />
+          <Route
+            path="/acquisition"
+            element={
+              <ProtectedRoute>
+                <AcquisitionPage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>
