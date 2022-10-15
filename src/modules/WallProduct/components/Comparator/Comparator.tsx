@@ -13,6 +13,7 @@ export const Comparator = observer(() => {
       toggleComparator()
     }
   }, [list])
+
   return (
     <div
       style={{
