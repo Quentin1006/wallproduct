@@ -18,7 +18,8 @@ type ProductsSearchProps = {
 }
 
 const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
-  const { products, filters, setProducts } = useStore("wallProductStore")
+  const { addNextProductToDisplay, products, productsToDisplay, filters, setProducts } =
+    useStore("wallProductStore")
   const { list } = useStore("comparatorStore")
 
   const useRenderProduct = useCallback(
@@ -28,6 +29,11 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
     },
     [list]
   )
+
+  const useGetNextProducts = useCallback(() => {
+    addNextProductToDisplay()
+    return productsToDisplay
+  }, [])
 
   const {
     isError,
@@ -66,16 +72,25 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
     <div>
       <WelcomeBox />
       <div style={{ display: "flex" }}>
-        <div style={{ flexGrow: 0 }}>
+        <div
+          style={{
+            flexGrow: 0,
+            width: "30%",
+            borderRight: "1px solid grey",
+            paddingBottom: "150px",
+          }}
+        >
           <Filters />
         </div>
-        <hr />
-
-        <ProductsList
-          products={products}
-          productType="Téléphones"
-          renderProduct={useRenderProduct}
-        />
+        <div style={{ width: "70%" }}>
+          <ProductsList
+            totalLength={products.length}
+            products={productsToDisplay}
+            getNextProducts={useGetNextProducts}
+            productType="Téléphones"
+            renderProduct={useRenderProduct}
+          />
+        </div>
       </div>
     </div>
   )

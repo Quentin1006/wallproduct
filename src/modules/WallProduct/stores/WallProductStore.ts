@@ -2,18 +2,22 @@ import { makeAutoObservable } from "mobx"
 import autoBind from "auto-bind"
 
 import type { FilterRecord, Product } from "typings"
-import { appendFiltersToUrl, hasFilters, mapChoicesToState } from "../helpers/helpers"
+import { hasFilters, mapChoicesToState } from "../helpers/helpers"
+import { PAGE_SIZE } from "../config"
 
 export default class WallProductStore {
   config
   constructor(config: any) {
-    console.log("creating store")
     this.config = config
     makeAutoObservable(this)
     autoBind(this)
   }
+  products: Product[] | undefined
+
+  nbProductsToDisplay = PAGE_SIZE
 
   name = "wallProductStore"
+
   filters: FilterRecord = {
     search: {
       name: "Recherche",
@@ -59,7 +63,13 @@ export default class WallProductStore {
     return mapChoicesToState(this.filters.color.choices, this.filters.color.state)
   }
 
-  products: Product[] | undefined
+  get productsToDisplay() {
+    return this.products?.slice(0, this.nbProductsToDisplay) || []
+  }
+
+  addNextProductToDisplay() {
+    this.nbProductsToDisplay += PAGE_SIZE
+  }
 
   setProducts(products: Product[]): void {
     this.products = products
