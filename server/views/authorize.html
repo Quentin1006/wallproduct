@@ -23,13 +23,14 @@
       <form>
         <div class="error">Erreur d'authentication</div>
         <label for="id">Identifiant :</label>
-        <input type="text" placeholder="identifiant..." name="id" id="id" />
+        <input type="text" placeholder="identifiant..." value="test" name="id" id="id" />
         <br />
         <label for="pwd">Mot de passe :</label>
         <input
           type="password"
           placeholder="mot de passe..."
           name="pwd"
+          value="password"
           id="pwd"
         />
         <br />
@@ -45,8 +46,9 @@
         const pwd = document.querySelector("#pwd");
 
         if (id.value === "test" && pwd.value === "password") {
+          const redirectUri = new URL(window.location.href).searchParams.get("redirect_uri")
           window.location.href =
-            "http://localhost:3000?access_token=at-1234&id=1";
+            `${redirectUri}?access_token=at-1234&id=1&expires=${Date.now() + 3 * 60 * 1000}`;
         } else {
           const error = document.querySelector(".error");
           error.style.display = "block";
