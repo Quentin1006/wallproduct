@@ -53,25 +53,32 @@ app.get("/products", (req, res) => {
 
   const products = db.filter((p) => {
     let isMatch = false;
+    let hasFailedFilter = false
 
     if(query.search) {
-      isMatch = Boolean(p.brand.match(new RegExp(query.search, "gi")));
+      isMatch = !hasFailedFilter && Boolean(p.brand.match(new RegExp(query.search, "gi")));
+      hasFailedFilter = !isMatch
     }
 
     if (query.brand) {
-      isMatch = Boolean(p.brand.match(new RegExp(query.brand, "gi")));
+      const brandsSelected = query.brand.split(",")
+      isMatch = !hasFailedFilter && brandsSelected.some((brand) => Boolean(p.brand.match(new RegExp(brand, "gi"))))
+      hasFailedFilter = !isMatch
     }
 
     if (query.name) {
-      isMatch = Boolean(p.name.match(new RegExp(query.name, "gi")));
+      isMatch = !hasFailedFilter && Boolean(p.name.match(new RegExp(query.name, "gi")));
+      hasFailedFilter = !isMatch
     }
 
     if (query.year) {
-      isMatch = p.year === Number(query.year);
+      isMatch = !hasFailedFilter && p.year === Number(query.year);
+      hasFailedFilter = !isMatch
     }
 
     if (query.color) {
-      isMatch = Boolean(p.color.match(new RegExp(query.color, "gi")));
+      isMatch = !hasFailedFilter && Boolean(p.color.match(new RegExp(query.color, "gi")));
+      hasFailedFilter = !isMatch
     }
 
     return isMatch;
