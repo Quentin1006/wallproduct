@@ -2,22 +2,23 @@ import React, { Fragment, Ref, useState } from "react"
 import { Filter } from "../../../typings"
 
 export type TextInputFilterProps = {
-  filter: Filter
+  filterState: Filter
+  name: string
   onUpdateFilter: (label: string, value: string) => void
 }
 
 const TextInputFilter = React.forwardRef(
-  ({ filter, onUpdateFilter }: TextInputFilterProps, ref: Ref<any>) => {
+  ({ filterState, name, onUpdateFilter }: TextInputFilterProps, ref: Ref<any>) => {
     return (
-      <Fragment key={filter.label}>
-        <label htmlFor={filter.label}>{filter.label} : </label>
+      <Fragment key={name}>
+        <label htmlFor={name}>{name} : </label>
         <input
-          name={filter.label}
+          name={name}
           type="text"
-          value={filter.state}
+          value={filterState.state}
           ref={ref}
           onChange={(e) => {
-            onUpdateFilter(filter.label, e.target.value)
+            onUpdateFilter(name, e.target.value)
           }}
         />
       </Fragment>

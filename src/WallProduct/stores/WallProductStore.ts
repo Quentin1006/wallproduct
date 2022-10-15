@@ -1,82 +1,98 @@
-import { makeAutoObservable } from "mobx";
-import autoBind from "auto-bind";
+import { makeAutoObservable } from "mobx"
+import autoBind from "auto-bind"
 
-import type { FilterRecord, Product } from "../../typings";
-import { appendFiltersToUrl, hasFilters } from "../helpers/helpers";
+import type { FilterRecord, Product } from "../../typings"
+import { appendFiltersToUrl, hasFilters } from "../helpers/helpers"
 
 export default class WallProductStore {
-  config;
+  config
   constructor(config: any) {
-    console.log("creating store");
-    this.config = config;
-    makeAutoObservable(this);
-    autoBind(this);
+    console.log("creating store")
+    this.config = config
+    makeAutoObservable(this)
+    autoBind(this)
   }
-  isLoading = true;
-  isError = false;
-  name = "wallProductStore";
+
+  name = "wallProductStore"
   filters: FilterRecord = {
+    search: {
+      name: "Recherche",
+      state: "",
+      type: "input",
+    },
     brand: {
-      label: "brand",
-      state: "",
-      type: "input",
+      name: "Marque",
+      state: [],
+      type: "checkbox",
+      choices: ["Google", "Apple", "Xiaomi", "Sony"],
     },
-    color: {
-      label: "color",
-      state: "",
-      type: "input",
+    price: {
+      name: "Prix",
+      state: [],
+      type: "checkbox",
+      choices: [],
     },
-  };
-
-  products: Product[] | undefined;
-
-  setError(val = true): void {
-    this.isError = val;
   }
 
-  setLoading(val: boolean): void {
-    this.isLoading = val;
+  get checkboxFiltersChoices() {
+    return Object.values(this.filters)
+      .filter((f) => f.type === "checkbox")
+      .map((f) =>
+        (f.choices || []).map((choice) => ({
+          name: choice,
+          checked: f.state.indexOf(choice) >= 0,
+        }))
+      )
   }
+
+  get brandFilterChoices() {
+    const resp = (this.filters.brand.choices || []).map((choice) => ({
+      name: choice,
+      checked: this.filters.brand.state.indexOf(choice) >= 0,
+    }))
+
+    return resp
+  }
+
+  products: Product[] | undefined
 
   setProducts(products: Product[]): void {
-    this.products = products;
+    this.products = products
   }
 
   setFilters(filters: FilterRecord) {
-    this.filters = filters;
+    this.filters = filters
   }
 
   get hasFilters() {
-    return hasFilters(this.filters);
+    return hasFilters(this.filters)
   }
 
-  updateFilter(filterName: string, newState: string) {
-    const newFilter = {
-      ...this.filters[filterName],
-      state: newState,
-    };
+  updateCheckboxFilter(group: string, name: string, isChecked: boolean) {
+    let state = this.filters[group].state as Array<string>
+    if (isChecked && state.indexOf(name) < 0) {
+      // and doesnt have filter
+      state.push(name)
+    } else if (state.indexOf(name) >= 0) {
+      const idx = state.findIndex((val) => val === name)
+      idx >= 0 && state.splice(idx, 1)
+    }
 
     this.filters = {
       ...this.filters,
-      [filterName]: newFilter,
-    };
-
-    console.log({ filters: JSON.stringify(this.filters) });
+      [group]: this.filters[group],
+    }
   }
 
-  async fetchProducts(headers: Record<string, string>) {
-    try {
-      console.log({ apiUrl: this.config.apiUrl });
-      const urlWithQueryString = appendFiltersToUrl(
-        `${this.config.apiUrl}/products`,
-        this.filters
-      );
-      const response = await fetch(urlWithQueryString, headers);
-      const data = await response.json();
-      this.setProducts(data.products);
-    } catch (error) {
-      this.setError();
+  updateFilter(filterName: string, newState: Record<string, string>) {
+    const newFilter = {
+      ...this.filters[filterName],
+      ...newState,
     }
-    this.setLoading(false);
+    this.filters = {
+      ...this.filters,
+      [filterName]: newFilter,
+    }
+    console.log({ filters: JSON.stringify(this.filters) })
   }
 }

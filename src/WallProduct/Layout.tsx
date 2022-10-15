@@ -63,7 +63,10 @@ const Layout = observer(() => {
       </div>
 
       <hr />
-      <Outlet />
+      <div style={{ maxWidth: "1200px", margin: "0 25px" }}>
+        <Outlet />
+      </div>
+
       <Comparator />
       <AppModal />
     </>

@@ -1,35 +1,46 @@
-import type { FilterRecord } from "../../typings";
+import type { FilterRecord } from "../../typings"
 
 export const hasFilters = (filters: FilterRecord) => {
-  return Object.values(filters).some((f) => f.state !== "");
-};
+  return Object.values(filters).some((f) => {
+    if (Array.isArray(f.state)) {
+      return f.state.length > 0
+    }
+    return f.state !== ""
+  })
+}
 
 export const appendFiltersToUrl = (url: string, filters: FilterRecord) => {
-  const filterValues = Object.values(filters);
+  const filterKeys = Object.keys(filters)
 
   if (!hasFilters(filters)) {
-    return url;
+    return url
   }
 
-  const params = filterValues.reduce((acc, f) => {
+  const params = filterKeys.reduce((acc, f) => {
+    const stateAsArray = filters[f].state as Array<string>
+    const stateAsString = filters[f].state as string
+
+    const state = Array.isArray(filters[f].state) ? stateAsArray.join(",") : stateAsString
+
+    if (state.replace(",", "") === "") {
+      return acc
+    }
+
     return {
       ...acc,
-      [f.label]: f.state,
-    };
-  }, {} as Record<string, string>);
+      [f]: state,
+    }
+  }, {} as Record<string, string>)
 
-  return appendQueryParamsToUrl(url, params);
-};
+  return appendQueryParamsToUrl(url, params)
+}
 
-export const appendQueryParamsToUrl = (
-  url: string,
-  params: Record<string, string>
-) => {
-  const searchKeys = Object.keys(params);
-  const searchParams = new URLSearchParams(url);
+export const appendQueryParamsToUrl = (url: string, params: Record<string, string>) => {
+  const searchKeys = Object.keys(params)
+  const searchParams = new URLSearchParams(url)
   searchKeys.forEach((p) => {
-    searchParams.append(p, params[p]);
-  });
+    searchParams.append(p, params[p])
+  })
 
   return `${url}?${searchParams.toString()}`
-};
+}

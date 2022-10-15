@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { observer } from "mobx-react-lite"
 
 import { useStore } from "../../../state"
@@ -6,25 +6,42 @@ import { useStore } from "../../../state"
 import Filters from "../Filters"
 import { ProductsList } from "../ProductsList"
 
+import { useAuth } from "../../../modules/auth"
 import { useFetcher } from "../../../modules/fetcher"
 import { appendFiltersToUrl } from "../../helpers/helpers"
-import { FETCH_PRODUCT_URL } from "../../config/config"
+import { FETCH_PRODUCT_URL, OfferType } from "../../config"
+import { ProductCard } from "../ProductCard"
+import { Product } from "../../../typings"
+import { WelcomeBox } from "../WelcomeBox"
 
-const PublicRenewal = observer(({ goBack }: any) => {
-  const { products, filters, setProducts, updateFilter } = useStore("wallProductStore")
-  const { isError, error, data, isLoading, refetch } = useFetcher(FETCH_PRODUCT_URL, {
+type ProductsSearchProps = {
+  type: OfferType
+}
+
+const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
+  const { products, filters, setProducts } = useStore("wallProductStore")
+  const useRenderProduct = useCallback((p: Product) => <ProductCard product={p} />, [])
+
+  const {
+    isError,
+    data: productData,
+    isLoading,
+    refetch,
+  } = useFetcher(FETCH_PRODUCT_URL(), {
     disabled: false,
   })
 
+  // Fill up the store with fetched products
   useEffect(() => {
-    if (data) {
-      setProducts(data.products)
+    if (productData) {
+      setProducts(productData.products)
     }
-  }, [data])
+  }, [productData])
 
+  // Refetch products when filters change
   useEffect(() => {
-    if (data) {
-      const urlWithFilters = appendFiltersToUrl(FETCH_PRODUCT_URL, filters)
+    if (productData) {
+      const urlWithFilters = appendFiltersToUrl(FETCH_PRODUCT_URL(), filters)
       console.log({ urlWithFilters })
       refetch(urlWithFilters)
     }
@@ -40,13 +57,21 @@ const PublicRenewal = observer(({ goBack }: any) => {
 
   return (
     <div>
+      <WelcomeBox />
       <div style={{ display: "flex" }}>
-        <Filters />
+        <div style={{ flexGrow: 0 }}>
+          <Filters />
+        </div>
         <hr />
-        <ProductsList />
+
+        <ProductsList
+          products={products}
+          productType="Téléphones"
+          renderProduct={useRenderProduct}
+        />
       </div>
     </div>
   )
 })
 
-export default PublicRenewal
+export default ProductsSearch

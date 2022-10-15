@@ -1,4 +1,4 @@
-import { OfferType } from "../config/config"
+import { OfferType } from "../config"
 import { useTitle } from "../hooks/useTitle"
 import ProductsSearch from "../components/ProductsSearch/ProductsSearch"
 
