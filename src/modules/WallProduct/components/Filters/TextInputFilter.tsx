@@ -1,4 +1,5 @@
-import React, { Fragment, Ref, useState } from "react"
+import { useDebounce } from "../../hooks/useDebounce"
+import { Fragment, useEffect } from "react"
 import { Filter } from "typings"
 
 export type TextInputFilterProps = {
@@ -7,23 +8,25 @@ export type TextInputFilterProps = {
   onUpdateFilter: (label: string, value: string) => void
 }
 
-const TextInputFilter = React.forwardRef(
-  ({ filterState, name, onUpdateFilter }: TextInputFilterProps, ref: Ref<any>) => {
-    return (
-      <Fragment key={name}>
-        <label htmlFor={name}>{name} : </label>
-        <input
-          name={name}
-          type="text"
-          value={filterState.state}
-          ref={ref}
-          onChange={(e) => {
-            onUpdateFilter(name, e.target.value)
-          }}
-        />
-      </Fragment>
-    )
+const TextInputFilter = ({ filterState, name, onUpdateFilter }: TextInputFilterProps) => {
+  console.log("rerendering input")
+
+  const { debounceValue, updateDebounce } = useDebounce({
+    initialState: "",
+    delay: 200,
+    onUpdateDebounce: onUpdateFilter,
+  })
+
+  const onChange = (e: any) => {
+    updateDebounce(name, e.target.value)
   }
-)
+
+  return (
+    <Fragment key={name}>
+      <label htmlFor={name}>{name} : </label>
+      <input name={name} type="text" value={debounceValue} onChange={onChange} />
+    </Fragment>
+  )
+}
 
 export default TextInputFilter

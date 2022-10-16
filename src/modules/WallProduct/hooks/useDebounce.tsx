@@ -1,34 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react"
 
-// Our hook
-export default function useDebounce(value: string, delay: number) {
-  // State and setters for debounced value
-  const [debouncedValue, setDebouncedValue] = useState(value);
+export type UseDebounceProps = {
+  initialState: string
+  delay: number
+  onUpdateDebounce: (name: string, value: string) => void
+}
 
-  useEffect(
-    () => {
-      // Set debouncedValue to value (passed in) after the specified delay
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
+export const useDebounce = ({ initialState, delay, onUpdateDebounce }: UseDebounceProps) => {
+  const [debounceValue, setDebounceValue] = useState(initialState)
+  const timeoutId = useRef<ReturnType<typeof setTimeout>>()
 
-      // Return a cleanup function that will be called every time ...
-      // ... useEffect is re-called. useEffect will only be re-called ...
-      // ... if value changes (see the inputs array below). 
-      // This is how we prevent debouncedValue from changing if value is ...
-      // ... changed within the delay period. Timeout gets cleared and restarted.
-      // To put it in context, if the user is typing within our app's ...
-      // ... search box, we don't want the debouncedValue to update until ...
-      // ... they've stopped typing for more than 500ms.
-      return () => {
-        clearTimeout(handler);
-      };
-    },
-    // Only re-call effect if value changes
-    // You could also add the "delay" var to inputs array if you ...
-    // ... need to be able to change that dynamically.
-    [value] 
-  );
+  const updateDebounce = useCallback((name: string, value: string) => {
+    clearTimeout(timeoutId.current)
+    setDebounceValue(value)
+    timeoutId.current = setTimeout(() => {
+      onUpdateDebounce(name, value)
+    }, delay)
+  }, [])
 
-  return debouncedValue;
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutId.current)
+    }
+  }, [])
+
+  return {
+    debounceValue,
+    updateDebounce,
+  }
 }

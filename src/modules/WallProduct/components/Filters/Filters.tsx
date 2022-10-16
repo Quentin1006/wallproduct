@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useStore } from "@shared/state"
 
 import CheckboxGroupFilter from "./CheckboxGroupFilter"
@@ -10,23 +10,19 @@ export const Filters = observer(() => {
   const { filters, brandFilterChoices, colorFilterChoices, updateCheckboxFilter, updateFilter } =
     useStore("wallProductStore")
   const [focused, setFocused] = useState(0)
-  const itemsRef = useRef<any>([])
 
-  useEffect(() => {
-    itemsRef.current[focused].focus()
-  }, [focused])
+  const useUpdateFilter = useCallback((label: string, value: string) => {
+    setFocused(0)
+    updateFilter(label, { state: value })
+  }, [])
 
   return (
     <div style={{ margin: "15px 20px" }}>
       <div style={{ fontSize: "24px", paddingBottom: "15px" }}>Filtres</div>
       <TextInputFilter
-        ref={(el) => (itemsRef.current[0] = el)}
         name="search"
         filterState={filters.search}
-        onUpdateFilter={(label: string, value: string) => {
-          setFocused(0)
-          updateFilter(label, { state: value })
-        }}
+        onUpdateFilter={useUpdateFilter}
       />
       <hr />
       <CheckboxGroupFilter
