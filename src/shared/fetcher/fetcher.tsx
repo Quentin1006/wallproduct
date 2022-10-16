@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react"
-import axios from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 import { useAuth } from "../auth"
 import { useConfig } from "../../config"
 
@@ -10,13 +10,22 @@ export type UseFetcherOpts = {
   disabled: boolean
   initialValue?: string
 }
+
+export type FetcherOpts = AxiosRequestConfig
+
+export type FetcherProviderProps = {
+  apiUrl: string
+  getAccessToken: () => string | undefined
+  fetcherOpts?: FetcherOpts
+  children: React.ReactNode
+}
+
 export const isAbsoluteUrl = (testUrl: string) => {
   return testUrl.indexOf("http://") === 0 || testUrl.indexOf("https://") === 0
 }
 
 export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
   const { fetcher } = useContext(FetcherContext)
-  const { apiUrl } = useConfig()
   const [isLoading, setLoading] = useState(true)
   const [isFetching, setFetching] = useState(false)
   const [error, setError] = useState<any>(undefined)
@@ -26,9 +35,8 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
 
   const fetchData = useRef(async (url: string) => {
     try {
-      const absoluteUrl = isAbsoluteUrl(url) ? url : `${apiUrl}${url}`
       setFetching(true)
-      const response = await fetcher.get(absoluteUrl, {
+      const response = await fetcher.get(url, {
         signal: controller.signal,
         headers: opts?.headers,
       })
@@ -60,11 +68,13 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
   }
 }
 
-export const FetcherProvider = ({ children }: any) => {
+export const FetcherProvider = ({ apiUrl, children }: FetcherProviderProps) => {
   const {
     auth: { accessToken },
   } = useAuth()
-  const axiosInstance = axios.create()
+  const axiosInstance = axios.create({
+    baseURL: apiUrl,
+  })
 
   useEffect(() => {
     axiosInstance.interceptors.request.use((config) => {

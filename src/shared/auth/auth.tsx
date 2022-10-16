@@ -1,15 +1,27 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
 export type AuthContextProps = {
   authConfig: AuthConfig
   auth: AuthState
 }
 
-// @TODO: A remplacer
-export type AuthConfig = any
+export type AuthProviderProps = {
+  authConfig: AuthConfig
+  children: React.ReactNode
+}
+
+export type AuthConfig = {
+  domain: string
+  scope: string
+  clientId: string
+  redirectUri: string
+  issuer: string
+}
 
 export type AuthState = {
   accessToken?: string
+  getAccessToken: () => string | undefined
+  loginWithRedirect: () => void
   expires?: number
   id?: number
 }
@@ -22,18 +34,30 @@ export const _getUrlParam = (param: string): string | undefined => {
 export const _buildAuthorizeUrl = (authConfig: AuthConfig): string => {
   const currentUrl = new URL(window.location.href)
   const currentPath = currentUrl.toString().split("?")[0]
-  return `http://localhost:8088/authorize?redirect_uri=${currentPath}`
+  return `${authConfig.domain}/authorize?redirect_uri=${encodeURIComponent(currentPath)}`
 }
 
 export const AuthContext = createContext<AuthContextProps>({} as any)
 
 export const useAuth = () => useContext(AuthContext)
 
-export const AuthProvider = ({ authConfig, children }: any) => {
-  const [auth, setAuth] = useState<AuthState>({})
+export const AuthProvider = ({ authConfig, children }: AuthProviderProps) => {
+  const [auth, setAuth] = useState<AuthState>({} as AuthState)
+  const [isCallRedirectProcessed, setIsCallRedirectProcessed] = useState<boolean>(false)
+
+  const isCallbackRedirect = useMemo(() => {
+    return _getUrlParam("access_token")
+  }, [])
+
+  const getAccessToken = useCallback(() => {
+    return auth.accessToken
+  }, [])
+
+  const loginWithRedirect = useCallback(() => loginWithRedirect, [])
 
   useEffect(() => {
-    if (_getUrlParam("access_token")) {
+    console.log("in AuthProvider > useEffect")
+    if (isCallbackRedirect) {
       const accessToken = _getUrlParam("access_token")
       const id = Number(_getUrlParam("id"))
       const expires = Number(_getUrlParam("expires"))
@@ -43,11 +67,18 @@ export const AuthProvider = ({ authConfig, children }: any) => {
 
       setAuth({
         accessToken,
+        getAccessToken,
+        loginWithRedirect,
         expires,
         id,
       })
+      setIsCallRedirectProcessed(true)
     }
   }, [])
+
+  if (isCallbackRedirect && !isCallRedirectProcessed) {
+    return <></>
+  }
   return <AuthContext.Provider value={{ auth, authConfig }}>{children}</AuthContext.Provider>
 }
 
@@ -58,11 +89,16 @@ export const ProtectedRoute = ({ children }: any) => {
   } = useAuth()
 
   useEffect(() => {
+    console.log("in ProtectedRoute > useEffect")
     const date = Date.now()
     if (!accessToken || (expires && expires < date)) {
-      window.location.href = _buildAuthorizeUrl(authConfig)
+      loginWithRedirect(authConfig)
     }
   }, [accessToken, expires])
 
   return children
+}
+
+const loginWithRedirect = (authConfig: AuthConfig) => {
+  window.location.href = _buildAuthorizeUrl(authConfig)
 }

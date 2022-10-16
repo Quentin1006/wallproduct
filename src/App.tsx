@@ -2,20 +2,35 @@ import Router from "./Router"
 
 import "./App.css"
 import { StoresProvider } from "./shared/state"
-import { ConfigProvider } from "./config"
-import { AuthProvider } from "./shared/auth"
+import { ConfigProvider, useConfig } from "./config"
+import { AuthProvider, useAuth } from "./shared/auth"
 import { FetcherProvider } from "./shared/fetcher"
 
 function App() {
   return (
-    <AuthProvider>
-      <FetcherProvider>
-        <ConfigProvider>
-          <StoresProvider>
-            <Router />
-          </StoresProvider>
-        </ConfigProvider>
-      </FetcherProvider>
+    <ConfigProvider>
+      <AppWithConfig />
+    </ConfigProvider>
+  )
+}
+
+function AppWithConfigAndAuth() {
+  const { apiUrl } = useConfig()
+  const { auth } = useAuth()
+  return (
+    <FetcherProvider apiUrl={apiUrl} getAccessToken={auth.getAccessToken}>
+      <StoresProvider>
+        <Router />
+      </StoresProvider>
+    </FetcherProvider>
+  )
+}
+
+function AppWithConfig() {
+  const { authConfig } = useConfig()
+  return (
+    <AuthProvider authConfig={authConfig}>
+      <AppWithConfigAndAuth />
     </AuthProvider>
   )
 }
