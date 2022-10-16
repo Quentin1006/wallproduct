@@ -1,9 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const bodyParser = require('body-parser')
 const fs = require("fs");
 const path = require("path");
+const Store = require("./store");
+
 const app = express();
+
+const tokenStore = new Store()
 
 const port = 8088;
 
@@ -16,6 +21,7 @@ const db = JSON.parse(fs.readFileSync(dbPath, "utf-8"));
 
 app.use(cors(corsOptions));
 app.use(morgan("combined"));
+app.use(bodyParser.json())
 
 app.use(express.static(path.resolve(__dirname, "public")));
 
@@ -23,7 +29,7 @@ const sleep = (time) => new Promise(resolve => { setTimeout(resolve, time) })
 
 const verifyAuth = (req, res, next) => {
   const token = req.headers["authorization"];
-  if (token !== "Bearer at-1234") {
+  if (!tokenStore.verifyToken(token)) {
     throw new Error("UnauthorizedError");
   }
   next();
@@ -34,6 +40,18 @@ app.get("/authorize", async (req, res) => {
   res.set({"Content-Type": "text/html; charset=UTF-8"})
   
   res.status(200).send(htmlContent)
+})
+
+app.post("/authorize", async (req, res) => { 
+  console.log("okez")
+  try {
+    const { login, pwd } = req.body
+  const tokenInfos = tokenStore.authorize(login, pwd)
+  res.json(tokenInfos)
+  } catch(err) {
+    res.status(401).send({error: true, reason: "UNAUTHORIZED"})
+  }
+  
 })
 
 app.get("/users/:id", verifyAuth, async (req, res) => {

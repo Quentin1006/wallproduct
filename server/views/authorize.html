@@ -40,18 +40,26 @@
     </div>
     <script>
       const submitBtn = document.querySelector("#submit");
-      submitBtn.addEventListener("click", (e) => {
+      submitBtn.addEventListener("click", async (e) => {
         e.preventDefault();
-        const id = document.querySelector("#id");
-        const pwd = document.querySelector("#pwd");
+        const idInput = document.querySelector("#id");
+        const pwdInput = document.querySelector("#pwd");
 
-        if (id.value === "test" && pwd.value === "password") {
-          const redirectUri = new URL(window.location.href).searchParams.get("redirect_uri")
-          window.location.href =
-            `${redirectUri}?access_token=at-1234&id=1&expires=${Date.now() + 3 * 60 * 1000}`;
-        } else {
+        const data = await fetch("/authorize", {
+          method: "post",
+          headers: { "content-type": "application/json"},
+          body: JSON.stringify({
+            login: idInput.value,
+            pwd: pwdInput.value
+          })
+        }).then((res) => res.json())
+
+        if(data.error) {
           const error = document.querySelector(".error");
           error.style.display = "block";
+        } else {
+          const redirectUri = new URL(window.location.href).searchParams.get("redirect_uri")
+          window.location.href = `${decodeURIComponent(redirectUri)}?access_token=${data.token}&id=${data.id}&expires=${data.expires}`;
         }
       });
     </script>
