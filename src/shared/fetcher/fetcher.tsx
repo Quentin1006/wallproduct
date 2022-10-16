@@ -20,10 +20,6 @@ export type FetcherProviderProps = {
   children: React.ReactNode
 }
 
-export const isAbsoluteUrl = (testUrl: string) => {
-  return testUrl.indexOf("http://") === 0 || testUrl.indexOf("https://") === 0
-}
-
 export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
   const { fetcher } = useContext(FetcherContext)
   const [isLoading, setLoading] = useState(true)
