@@ -19,6 +19,8 @@ app.use(morgan("combined"));
 
 app.use(express.static(path.resolve(__dirname, "public")));
 
+const sleep = (time) => new Promise(resolve => { setTimeout(resolve, time) })
+
 const verifyAuth = (req, res, next) => {
   const token = req.headers["authorization"];
   if (token !== "Bearer at-1234") {
@@ -35,8 +37,8 @@ app.get("/authorize", async (req, res) => {
 })
 
 app.get("/users/:id", verifyAuth, async (req, res) => {
-  const sleep = () => new Promise(resolve => { setTimeout(resolve, 3500) })
-  await sleep()
+  
+  await sleep(3500)
   res.json({
     name: "Quentin",
     lastname: "SAHAL",
@@ -44,7 +46,8 @@ app.get("/users/:id", verifyAuth, async (req, res) => {
   });
 });
 
-app.get("/products", (req, res) => {
+app.get("/products", async (req, res) => {
+  await sleep(300)
   const query = req.query;
   if (Object.keys(query).length === 0) {
     res.json({ products: db });

@@ -1,4 +1,5 @@
-import { Fragment, useRef, useState } from "react"
+import { useDebounce } from "../../hooks/useDebounce"
+import { Fragment, useEffect } from "react"
 import { Filter } from "typings"
 
 export type TextInputFilterProps = {
@@ -8,23 +9,22 @@ export type TextInputFilterProps = {
 }
 
 const TextInputFilter = ({ filterState, name, onUpdateFilter }: TextInputFilterProps) => {
-  const [tmpValue, setTmpValue] = useState("")
-  let timeoutId = useRef<ReturnType<typeof setTimeout>>()
-
   console.log("rerendering input")
 
+  const { debounceValue, updateDebounce } = useDebounce({
+    initialState: "",
+    delay: 200,
+    onUpdateDebounce: onUpdateFilter,
+  })
+
   const onChange = (e: any) => {
-    clearTimeout(timeoutId.current)
-    setTmpValue(e.target.value)
-    timeoutId.current = setTimeout(() => {
-      onUpdateFilter(name, e.target.value)
-    }, 500)
+    updateDebounce(name, e.target.value)
   }
 
   return (
     <Fragment key={name}>
       <label htmlFor={name}>{name} : </label>
-      <input name={name} type="text" value={tmpValue} onChange={onChange} />
+      <input name={name} type="text" value={debounceValue} onChange={onChange} />
     </Fragment>
   )
 }
