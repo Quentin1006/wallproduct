@@ -16,9 +16,10 @@ function App() {
 
 function AppWithConfigAndAuth() {
   const { apiUrl } = useConfig()
-  const { auth } = useAuth()
+  const { auth, getAccessToken } = useAuth()
+
   return (
-    <FetcherProvider apiUrl={apiUrl} getAccessToken={auth.getAccessToken}>
+    <FetcherProvider apiUrl={apiUrl} getAccessToken={getAccessToken}>
       <StoresProvider>
         <Router />
       </StoresProvider>

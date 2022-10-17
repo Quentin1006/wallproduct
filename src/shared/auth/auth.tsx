@@ -2,6 +2,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 export type AuthContextProps = {
   authConfig: AuthConfig
+  getAccessToken: () => string | undefined
+  loginWithRedirect: () => void
   auth: AuthState
 }
 
@@ -20,8 +22,6 @@ export type AuthConfig = {
 
 export type AuthState = {
   accessToken?: string
-  getAccessToken: () => string | undefined
-  loginWithRedirect: () => void
   expires?: number
   id?: number
 }
@@ -51,7 +51,7 @@ export const AuthProvider = ({ authConfig, children }: AuthProviderProps) => {
 
   const getAccessToken = useCallback(() => {
     return auth.accessToken
-  }, [])
+  }, [auth.accessToken])
 
   const loginWithRedirect = useCallback(() => loginWithRedirect, [])
 
@@ -67,8 +67,6 @@ export const AuthProvider = ({ authConfig, children }: AuthProviderProps) => {
 
       setAuth({
         accessToken,
-        getAccessToken,
-        loginWithRedirect,
         expires,
         id,
       })
@@ -79,7 +77,11 @@ export const AuthProvider = ({ authConfig, children }: AuthProviderProps) => {
   if (isCallbackRedirect && !isCallRedirectProcessed) {
     return <></>
   }
-  return <AuthContext.Provider value={{ auth, authConfig }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ auth, authConfig, getAccessToken, loginWithRedirect }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export const ProtectedRoute = ({ children }: any) => {
@@ -95,6 +97,10 @@ export const ProtectedRoute = ({ children }: any) => {
       loginWithRedirect(authConfig)
     }
   }, [accessToken, expires])
+
+  if (!accessToken) {
+    return <></>
+  }
 
   return children
 }

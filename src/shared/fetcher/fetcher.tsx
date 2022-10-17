@@ -14,6 +14,7 @@ export type FetcherOpts = AxiosRequestConfig
 
 export type FetcherProviderProps = {
   apiUrl: string
+  onUnauthorized?: () => Promise<any>
   getAccessToken: () => string | undefined
   fetcherOpts?: FetcherOpts
   children: React.ReactNode
@@ -62,23 +63,34 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
   }
 }
 
-export const FetcherProvider = ({ apiUrl, children }: FetcherProviderProps) => {
-  const {
-    auth: { accessToken },
-  } = useAuth()
+export const FetcherProvider = ({
+  apiUrl,
+  getAccessToken,
+  onUnauthorized,
+  children,
+}: FetcherProviderProps) => {
   const axiosInstance = axios.create({
     baseURL: apiUrl,
   })
 
-  useEffect(() => {
-    axiosInstance.interceptors.request.use((config) => {
-      if (accessToken && config.headers) {
-        config.headers.Authorization = `Bearer ${accessToken}`
-      }
+  axiosInstance.interceptors.request.use((config) => {
+    if (getAccessToken() && config.headers) {
+      config.headers.Authorization = `Bearer ${getAccessToken()}`
+    }
 
-      return config
-    })
-  }, [axiosInstance, accessToken])
+    return config
+  })
+
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      return response
+    },
+    (error) => {
+      if (error.response.status === 401) {
+        onUnauthorized?.()
+      }
+    }
+  )
 
   return (
     <FetcherContext.Provider value={{ fetcher: axiosInstance }}>{children}</FetcherContext.Provider>
