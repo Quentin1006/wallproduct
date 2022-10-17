@@ -3,7 +3,7 @@ import ProductsSearch from "../components/ProductsSearch/ProductsSearch"
 import { OfferType } from "../config/config"
 
 const RenewalPage = () => {
-  useTitle("Renouvellement")
+  useTitle(OfferType.RENEWAL)
   return <ProductsSearch type={OfferType.RENEWAL} />
 }
 

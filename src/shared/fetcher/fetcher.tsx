@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 import axios, { AxiosRequestConfig } from "axios"
 import { useAuth } from "../auth"
-import { useConfig } from "../../config"
 
 export const FetcherContext = createContext({} as any)
 
@@ -27,13 +26,12 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
   const [error, setError] = useState<any>(undefined)
   const [data, setData] = useState<any>(opts?.initialValue)
 
-  const controller = new AbortController()
-
+  const controller = useRef<AbortController>(new AbortController())
   const fetchData = useRef(async (url: string) => {
     try {
       setFetching(true)
       const response = await fetcher.get(url, {
-        signal: controller.signal,
+        signal: controller.current.signal,
         headers: opts?.headers,
       })
       setData(response.data)
@@ -51,7 +49,7 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
     }
 
     return () => {
-      isFetching && controller.abort()
+      isFetching && controller.current.abort()
     }
   }, [])
 
@@ -81,6 +79,7 @@ export const FetcherProvider = ({ apiUrl, children }: FetcherProviderProps) => {
       return config
     })
   }, [axiosInstance, accessToken])
+
   return (
     <FetcherContext.Provider value={{ fetcher: axiosInstance }}>{children}</FetcherContext.Provider>
   )

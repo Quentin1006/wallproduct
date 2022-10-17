@@ -11,6 +11,7 @@ import { useEffect } from "react"
 const Layout = observer(() => {
   const { title, selectedMenu, setSelectedMenu } = useStore("uiStore")
 
+  // @TODO: Set selected menu on load
   useEffect(() => {
     if (!selectedMenu) {
     }
