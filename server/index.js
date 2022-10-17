@@ -8,7 +8,7 @@ const Store = require("./store");
 
 const app = express();
 
-const tokenStore = new Store()
+const tokenStore = new Store({ expirationTimeInMin: 1 })
 
 const port = 8088;
 
@@ -43,7 +43,6 @@ app.get("/authorize", async (req, res) => {
 })
 
 app.post("/authorize", async (req, res) => { 
-  console.log("okez")
   try {
     const { login, pwd } = req.body
   const tokenInfos = tokenStore.authorize(login, pwd)

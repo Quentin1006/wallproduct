@@ -8,6 +8,10 @@ const users = [{
 
 class Store {
   tokens = {}
+  expirationTimeInMin
+  constructor({expirationTimeInMin}) {
+    this.expirationTimeInMin = expirationTimeInMin || 5 
+  }
 
   authorize (login, pwd) {
     const user = this.verifyCreds(login, pwd)
@@ -27,15 +31,16 @@ class Store {
     const tokenInfos = {
       id,
       token: generatedToken,
-      expires: Date.now() + 5 * 60 * 1000 // valide 5 min 
+      expires: Date.now() + this.expirationTimeInMin * 60 * 1000 // valide 5 min 
     } 
 
     this.tokens[generatedToken] = tokenInfos
     return tokenInfos
   }
 
-  verifyToken(token) {
-    return this.tokens[token.replace("Bearer ", "")]
+  verifyToken(token = "") {
+    const tokenInfos = this.tokens[token.replace("Bearer ", "")] 
+    return tokenInfos?.expires > Date.now()
   }
 }
 
