@@ -29,7 +29,7 @@ export const ProductCard = observer(({ product, isInComparator }: ProductProps) 
         alignItems: "center",
         flexDirection: "column",
         width: "calc(33% - 50px)",
-        minWidth: "220px",
+        minWidth: "160px",
         margin: "15px",
         borderRadius: "5%",
       }}
@@ -43,8 +43,8 @@ export const ProductCard = observer(({ product, isInComparator }: ProductProps) 
             src={product.link}
             hash={product.hash}
             alt="telephone"
-            width={180}
-            height={288}
+            width={120}
+            height={180}
           />
         </LazyLoad>
       </div>
