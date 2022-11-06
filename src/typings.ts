@@ -1,5 +1,6 @@
 export type Product = {
   name: string
+  hash: string
   brand: string
   color: string
   link: string

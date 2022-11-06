@@ -1,6 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
+const { encodeImageToBlurhash } = require("./create-hash-from-image")
+
+
+const SERVER_DOMAIN = "http://localhost:8088"
 const MAX_SIZE_STR = 8;
 const MIN_SIZE_STR = 5;
 
@@ -29,20 +33,23 @@ const generateRandomName = () => {
   return (name += ` ${randNb}`);
 };
 
-const main = () => {
+const main = async () => {
   const products = [];
   for (let i = 0; i < 200; i++) {
     const randNbForBrand = genRandNb(0, BRANDS.length - 1);
     const randNbForYear = genRandNb(2018, 2023);
     const randNbForColor = genRandNb(0, COLORS.length - 1);
     const randNbForPrice = genRandNb(650, 1800);
+    const hash = await encodeImageToBlurhash(path.resolve(__dirname, `../public/image_${i}.webp`))
+
     products.push({
       name: generateRandomName(),
       brand: BRANDS[randNbForBrand],
       year: randNbForYear,
       color: COLORS[randNbForColor],
       price: randNbForPrice,
-      link: `http://localhost:8088/image_${i}.webp`,
+      link: `${SERVER_DOMAIN}/image_${i}.webp`,
+      hash
     });
   }
   fs.writeFileSync(

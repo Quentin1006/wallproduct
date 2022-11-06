@@ -1,10 +1,9 @@
 import LazyLoad from "react-lazy-load"
-import { useEffect, useMemo, useState } from "react"
 import type { Product } from "typings"
 import { useStore } from "@shared/state"
 import { observer } from "mobx-react-lite"
 
-import { SuspenseImg } from "../SuspenseImage/SuspenseImage"
+import { OptimizedImage } from "../OptimizedImage/OptimizedImage"
 
 export type ProductProps = {
   product: Product
@@ -36,10 +35,17 @@ export const ProductCard = observer(({ product, isInComparator }: ProductProps) 
     >
       <div>Modele : {product.name}</div>
       <div>Marque : {product.brand}</div>
-      <LazyLoad offset={300}>
-        <SuspenseImg src={product.link} alt="telephone" width="80px" />
-      </LazyLoad>
-
+      <div style={{ margin: "15px auto" }}>
+        <LazyLoad offset={300}>
+          <OptimizedImage
+            src={product.link}
+            hash={product.hash}
+            alt="telephone"
+            width={180}
+            height={288}
+          />
+        </LazyLoad>
+      </div>
       <div>Color : {product.color}</div>
       <div>Year : {product.year}</div>
       <br />
