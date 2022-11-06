@@ -29,15 +29,17 @@ export const ProductCard = observer(({ product, isInComparator }: ProductProps) 
         alignItems: "center",
         flexDirection: "column",
         width: "calc(33% - 50px)",
+        minWidth: "220px",
         margin: "15px",
         borderRadius: "5%",
       }}
     >
       <div>Modele : {product.name}</div>
       <div>Marque : {product.brand}</div>
-      <div style={{ margin: "15px auto" }}>
+      <div style={{ margin: "15px 5%" }}>
         <LazyLoad offset={300}>
           <OptimizedImage
+            srcSet={[]}
             src={product.link}
             hash={product.hash}
             alt="telephone"
