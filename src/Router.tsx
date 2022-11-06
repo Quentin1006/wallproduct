@@ -9,15 +9,15 @@ const Router: React.FC = () => (
     <BrowserRouter basename="telephones">
       <Routes>
         <Route path="/" element={<WallProductLayout />}>
-          <Route path="/renouvellement" element={<RenewalPage />} />
           <Route
-            path="/acquisition"
+            path="/renouvellement"
             element={
               <ProtectedRoute>
-                <AcquisitionPage />
+                <RenewalPage />
               </ProtectedRoute>
             }
           />
+          <Route path="/acquisition" element={<AcquisitionPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

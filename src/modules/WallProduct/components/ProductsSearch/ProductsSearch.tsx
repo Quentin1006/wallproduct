@@ -49,7 +49,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
     if (productData) {
       setProducts(productData.products)
     }
-  }, [productData])
+  }, [setProducts, productData])
 
   // Refetch products when filters change
   useEffect(() => {

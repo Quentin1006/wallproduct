@@ -1,3 +1,6 @@
+import Skeleton from "react-loading-skeleton"
+import "react-loading-skeleton/dist/skeleton.css"
+
 import { useAuth } from "@shared/auth"
 import { useFetcher } from "@shared/fetcher"
 import { FETCH_USER_URL } from "../../config"
@@ -15,7 +18,7 @@ export const WelcomeBox = () => {
           Bonjour {userData.name} {userData.lastname}
         </div>
       ) : (
-        ""
+        <Skeleton style={{ height: "24px", width: "250px" }} count={1} />
       )}
     </>
   )
