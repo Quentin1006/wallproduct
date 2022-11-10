@@ -10,7 +10,7 @@ import { ProductsList } from "../ProductsList"
 import { appendFiltersToUrl } from "../../helpers/helpers"
 import { FETCH_PRODUCT_URL, OfferType } from "../../config"
 import { ProductCard } from "../ProductCard"
-import { Product } from "typings"
+import type { Product } from "typings"
 import { WelcomeBox } from "../WelcomeBox"
 
 type ProductsSearchProps = {
@@ -33,7 +33,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
   const useGetNextProducts = useCallback(() => {
     addNextProductToDisplay()
     return productsToDisplay
-  }, [])
+  }, [addNextProductToDisplay, productsToDisplay])
 
   const {
     isError,

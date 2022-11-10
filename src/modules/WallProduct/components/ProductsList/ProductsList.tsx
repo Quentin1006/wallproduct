@@ -2,6 +2,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import { observer } from "mobx-react-lite"
 
 import React, { Fragment } from "react"
+import { ProductsListHeader } from "../ProductsListHeader"
 
 type NamedObj = { name: string }
 export type ProductsListProps<T extends NamedObj> = {
@@ -35,19 +36,11 @@ export const ProductsList = observer(
     }
     return (
       <div style={{ paddingBottom: "50px" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "15px",
-            fontSize: "24px",
-          }}
-        >
-          <div>
-            {totalLength} {productType}
-          </div>
-          <div>Displayed : {products.length}</div>
-        </div>
+        <ProductsListHeader
+          type={productType}
+          totalLength={totalLength}
+          displayedLength={products.length}
+        />
 
         <InfiniteScroll
           dataLength={products.length}
