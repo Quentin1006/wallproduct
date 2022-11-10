@@ -1,50 +1,27 @@
-import { useStickyMenu } from "../../hooks/useStickyMenu"
-import { useState, useEffect, useRef } from "react"
+import { useStore } from "@shared/state"
 
-export type ProductsListHeaderProps = {
-  displayedLength: number
-  totalLength: number
-  type: string
-}
+import Select from "react-select"
 
-export const ProductsListHeader = ({
-  totalLength,
-  displayedLength,
-  type,
-}: ProductsListHeaderProps) => {
-  const containerRef = useRef<any>(null)
+export const ProductsListHeader = () => {
+  const { products, nbProductsToDisplay } = useStore("wallProductStore")
 
-  const { position } = useStickyMenu(containerRef)
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ]
 
   return (
-    <div className="products-list-header-container" ref={containerRef}>
-      <div
-        className="products-list-header"
-        style={{
-          position,
-          top: 0,
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "15px",
-          fontSize: "24px",
-          backgroundColor: "#fff",
-          width: "100%",
-        }}
-      >
-        <div style={{ display: "flex" }}>
-          <div>
-            {totalLength} {type}
-          </div>
-          <div style={{ paddingLeft: "15px", paddingRight: "15px" }}>|</div>
-          <div>Displayed : {displayedLength}</div>
-        </div>
-
-        {/* <div>
-          <select>
-            <option></option>
-          </select>
-        </div> */}
+    <>
+      <div style={{ display: "flex", fontSize: "24px" }}>
+        <div>{products?.length} Téléphones</div>
+        <div style={{ paddingLeft: "15px", paddingRight: "15px" }}>|</div>
+        <div>Displayed : {nbProductsToDisplay}</div>
       </div>
-    </div>
+
+      <div style={{ minWidth: "200px" }}>
+        <Select options={options} />
+      </div>
+    </>
   )
 }

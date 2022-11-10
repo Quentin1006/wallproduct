@@ -12,6 +12,7 @@ import { FETCH_PRODUCT_URL, OfferType } from "../../config"
 import { ProductCard } from "../ProductCard"
 import type { Product } from "typings"
 import { WelcomeBox } from "../WelcomeBox"
+import { ProductsListHeader } from "../ProductsListHeader"
 
 type ProductsSearchProps = {
   type: OfferType
@@ -89,6 +90,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
             getNextProducts={useGetNextProducts}
             productType="Téléphones"
             renderProduct={useRenderProduct}
+            Header={ProductsListHeader}
           />
         </div>
       </div>
