@@ -3,15 +3,16 @@ import { observer } from "mobx-react-lite"
 
 import { useStore } from "@shared/state"
 import { useFetcher } from "@shared/fetcher"
+import { ProductsList } from "@lib/components/ProductsList"
 
 import Filters from "../Filters"
-import { ProductsList } from "../ProductsList"
 
 import { appendFiltersToUrl } from "../../helpers/helpers"
 import { FETCH_PRODUCT_URL, OfferType } from "../../config"
 import { ProductCard } from "../ProductCard"
-import { Product } from "typings"
+import type { Product } from "typings"
 import { WelcomeBox } from "../WelcomeBox"
+import { ProductsListHeader } from "../ProductsListHeader"
 
 type ProductsSearchProps = {
   type: OfferType
@@ -33,7 +34,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
   const useGetNextProducts = useCallback(() => {
     addNextProductToDisplay()
     return productsToDisplay
-  }, [])
+  }, [addNextProductToDisplay, productsToDisplay])
 
   const {
     isError,
@@ -89,6 +90,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
             getNextProducts={useGetNextProducts}
             productType="Téléphones"
             renderProduct={useRenderProduct}
+            Header={ProductsListHeader}
           />
         </div>
       </div>

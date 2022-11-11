@@ -3,7 +3,9 @@ import autoBind from "auto-bind"
 
 import type { FilterRecord, Product } from "typings"
 import { hasFilters, mapChoicesToState } from "../helpers/helpers"
-import { PAGE_SIZE } from "../config"
+import { PAGE_SIZE, SORT_OPTIONS } from "../config"
+
+import { SortOption } from "typings"
 
 export default class WallProductStore {
   config
@@ -44,6 +46,9 @@ export default class WallProductStore {
     },
   }
 
+  sortOptions = SORT_OPTIONS
+  selectedSortOption = SORT_OPTIONS[0]
+
   get checkboxFiltersChoices() {
     return Object.values(this.filters)
       .filter((f) => f.type === "checkbox")
@@ -73,6 +78,7 @@ export default class WallProductStore {
 
   setProducts(products: Product[]): void {
     this.products = products
+    this.sortProducts(this.selectedSortOption.value)
   }
 
   setFilters(filters: FilterRecord) {
@@ -109,5 +115,42 @@ export default class WallProductStore {
       [filterName]: newFilter,
     }
     console.log({ filters: JSON.stringify(this.filters) })
+  }
+
+  _sortFromLowToHigh() {
+    this.products?.sort((a, b) => a.price - b.price)
+  }
+
+  _sortByBestSells() {
+    this.products?.sort((a, b) => b.sold - a.sold)
+  }
+
+  _sortByNewest() {
+    this.products?.sort((a, b) => a.daysSinceLaunch - b.daysSinceLaunch)
+  }
+
+  // @TODO: Find a way to do it in one action
+  selectSortOption(newSortOption: SortOption | null) {
+    if (newSortOption) {
+      this.selectedSortOption = newSortOption
+      this.sortProducts(newSortOption.value)
+    }
+  }
+
+  sortProducts(criteria: string) {
+    switch (criteria) {
+      case "meilleures_ventes":
+        this._sortByBestSells()
+        break
+      case "prix_croissants":
+        this._sortFromLowToHigh()
+        break
+      case "nouveautes":
+        this._sortByNewest()
+        break
+      default:
+        console.warn(`criteria : ${criteria} cannot be handled`)
+        break
+    }
   }
 }

@@ -1,23 +1,26 @@
+import React, { Fragment } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { observer } from "mobx-react-lite"
 
-import React, { Fragment } from "react"
+import { HeaderContainer } from "./HeaderContainer"
 
-type NamedObj = { name: string }
+type NamedObj = { id: string | number }
+
 export type ProductsListProps<T extends NamedObj> = {
   products: Array<T>
   totalLength: number
   productType: string
   getNextProducts: any
   renderProduct: (p: T) => React.ReactNode
+  Header?: any
 }
 
 export const ProductsList = observer(
   <T extends NamedObj>({
     getNextProducts,
-    productType,
     products,
     renderProduct,
+    Header,
     totalLength,
   }: ProductsListProps<T>) => {
     console.log("rendering ProductsList", products.length)
@@ -35,19 +38,11 @@ export const ProductsList = observer(
     }
     return (
       <div style={{ paddingBottom: "50px" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "15px",
-            fontSize: "24px",
-          }}
-        >
-          <div>
-            {totalLength} {productType}
-          </div>
-          <div>Displayed : {products.length}</div>
-        </div>
+        {Header ? (
+          <HeaderContainer>
+            <Header />
+          </HeaderContainer>
+        ) : null}
 
         <InfiniteScroll
           dataLength={products.length}
@@ -67,7 +62,7 @@ export const ProductsList = observer(
             }}
           >
             {products.map((product) => (
-              <Fragment key={product.name}>{renderProduct(product)}</Fragment>
+              <Fragment key={product.id}>{renderProduct(product)}</Fragment>
             ))}
           </div>
         </InfiniteScroll>

@@ -60,11 +60,11 @@ const Layout = observer(() => {
         </div>
       </div>
       <div style={{ height: "300px" }}>
-        <img src={BackgroundPhone} width="100%" height="300px" />
+        <img src={BackgroundPhone} width="100%" height="300px" alt="background_phone" />
       </div>
 
       <hr />
-      <div style={{ maxWidth: "1200px", margin: "0 25px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <Outlet />
       </div>
 

@@ -1,4 +1,5 @@
 export type Product = {
+  id: string | number
   name: string
   hash: string
   brand: string
@@ -6,6 +7,16 @@ export type Product = {
   link: string
   price: number
   year: number
+  sold: number
+  daysSinceLaunch: number
+}
+
+export type User = {
+  id: string | number
+  first_name: string
+  last_name: string
+  email: string
+  gender: string
 }
 
 export type Filter = {
@@ -16,3 +27,8 @@ export type Filter = {
 }
 
 export type FilterRecord = Record<string, Filter>
+
+export type SortOption = {
+  value: string
+  label: string
+}

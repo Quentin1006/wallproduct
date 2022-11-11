@@ -48,6 +48,9 @@ export const ProductCard = observer(({ product, isInComparator }: ProductProps) 
           />
         </LazyLoad>
       </div>
+      <div>Vendu : {product.sold}</div>
+      <div>Prix : {product.price} €</div>
+      <div>Depuis : {product.daysSinceLaunch} jours</div>
       <div>Color : {product.color}</div>
       <div>Year : {product.year}</div>
       <br />
