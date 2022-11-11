@@ -1,12 +1,5 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import { AuthConfig } from "config"
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 
 export type AuthContextProps = {
   authConfig: AuthConfig
@@ -18,14 +11,6 @@ export type AuthContextProps = {
 export type AuthProviderProps = {
   authConfig: AuthConfig
   children: React.ReactNode
-}
-
-export type AuthConfig = {
-  domain: string
-  scope: string
-  clientId: string
-  redirectUri: string
-  issuer: string
 }
 
 export type AuthState = {

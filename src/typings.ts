@@ -1,5 +1,3 @@
-import localConfig from "config/local"
-
 export type Product = {
   id: string | number
   name: string
@@ -40,5 +38,3 @@ export enum Menus {
   RENEWAL = "Renouvellement",
   OTHER_PRODUCT_LIST = "Other ProductList",
 }
-
-export type Config = typeof localConfig

@@ -1,14 +1,13 @@
 import { createContext, ReactNode, useContext } from "react"
-import { useConfig } from "../../config"
+import { MergedConfig, useConfig } from "../../config"
 import { WallProductStore, ComparatorStore } from "@modules/WallProduct"
 import UiStore from "./UiStore"
-import { Config } from "typings"
 
 class RootStore {
   wallProductStore
   comparatorStore
   uiStore
-  constructor(config: Config) {
+  constructor(config: MergedConfig) {
     console.log("in rootStore constructor", { config })
     this.wallProductStore = new WallProductStore(config)
     this.comparatorStore = new ComparatorStore(config)

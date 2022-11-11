@@ -1,15 +1,16 @@
 import { makeAutoObservable } from "mobx"
 import autoBind from "auto-bind"
 
-import type { Config, FilterRecord, Product } from "typings"
+import type { FilterRecord, Product } from "typings"
 import { hasFilters, mapChoicesToState } from "../helpers/helpers"
 import { PAGE_SIZE, SORT_OPTIONS } from "../config"
 
 import { SortOption } from "typings"
+import { MergedConfig } from "config"
 
 export default class WallProductStore {
   config
-  constructor(config: Config) {
+  constructor(config: MergedConfig) {
     this.config = config
     makeAutoObservable(this)
     autoBind(this)
