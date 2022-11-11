@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
+import { CSSProperties, RefObject, useEffect, useState } from "react"
 
-export const useStickyMenu = (containerRef: any) => {
-  const [position, setPosition] = useState<any>("relative")
+export const useStickyMenu = (containerRef: RefObject<HTMLDivElement>) => {
+  const [position, setPosition] = useState<CSSProperties["position"]>("relative")
 
   useEffect(() => {
     const scrollEvent = () => {
-      if (!containerRef) {
+      if (!containerRef.current) {
         return
       }
       const topBorder = containerRef.current.getBoundingClientRect().top

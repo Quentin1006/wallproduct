@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, ReactNode } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { observer } from "mobx-react-lite"
 
@@ -11,8 +11,8 @@ export type ProductsListProps<T extends NamedObj> = {
   totalLength: number
   productType: string
   getNextProducts: any
-  renderProduct: (p: T) => React.ReactNode
-  Header?: any
+  renderProduct: (p: T) => ReactNode
+  Header?: React.FC
   headerStyle?: React.CSSProperties
   listStyle?: React.CSSProperties
 }

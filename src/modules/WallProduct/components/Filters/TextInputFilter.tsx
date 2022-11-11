@@ -1,5 +1,5 @@
 import { useDebounce } from "../../hooks/useDebounce"
-import { Fragment, useEffect } from "react"
+import { Fragment } from "react"
 import { Filter } from "typings"
 
 export type TextInputFilterProps = {
@@ -17,7 +17,7 @@ const TextInputFilter = ({ filterState, name, onUpdateFilter }: TextInputFilterP
     onUpdateDebounce: onUpdateFilter,
   })
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateDebounce(name, e.target.value)
   }
 

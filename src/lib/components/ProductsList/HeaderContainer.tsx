@@ -1,12 +1,12 @@
 import { CSSProperties, ReactNode, useRef } from "react"
-import { useStickyMenu } from "../../../modules/WallProduct/hooks/useStickyMenu"
+import { useStickyMenu } from "./useStickyMenu"
 
 export type HeaderContainerProps = {
-  customStyle: CSSProperties
+  customStyle?: CSSProperties
   children: ReactNode
 }
 
-export const HeaderContainer = ({ children, customStyle }: any) => {
+export const HeaderContainer = ({ children, customStyle }: HeaderContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { position } = useStickyMenu(containerRef)

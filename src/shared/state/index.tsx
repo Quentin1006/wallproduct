@@ -1,13 +1,14 @@
-import { createContext, useContext } from "react"
+import { createContext, ReactNode, useContext } from "react"
 import { useConfig } from "../../config"
 import { WallProductStore, ComparatorStore } from "@modules/WallProduct"
 import UiStore from "./UiStore"
+import { Config } from "typings"
 
 class RootStore {
   wallProductStore
   comparatorStore
   uiStore
-  constructor(config: any) {
+  constructor(config: Config) {
     console.log("in rootStore constructor", { config })
     this.wallProductStore = new WallProductStore(config)
     this.comparatorStore = new ComparatorStore(config)
@@ -18,7 +19,7 @@ class RootStore {
 export const StoresContext = createContext({} as RootStore)
 // export const StoresContextProvider = StoresContextProvider;
 
-export const StoresProvider = ({ children }: any) => {
+export const StoresProvider = ({ children }: { children: ReactNode }) => {
   const config = useConfig()
   const rootStore = new RootStore(config)
   return <StoresContext.Provider value={rootStore}>{children}</StoresContext.Provider>

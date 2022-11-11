@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { observer } from "mobx-react-lite"
 
 import { Comparator } from "./components/Comparator"
@@ -5,7 +6,11 @@ import { AppModal } from "./components/AppModal"
 
 import BackgroundPhone from "./assets/background-phone.png"
 
-const Layout = observer(({ children }: any) => {
+export type LayoutProps = {
+  children: ReactNode
+}
+
+const Layout = observer(({ children }: LayoutProps) => {
   return (
     <>
       <div style={{ height: "300px" }}>

@@ -1,30 +1,34 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react"
-import axios, { AxiosRequestConfig } from "axios"
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios"
 
-export const FetcherContext = createContext({} as any)
+export const FetcherContext = createContext<FetcherContextProps>({} as FetcherContextProps)
 
-export type UseFetcherOpts = {
+export type FetcherContextProps = {
+  fetcher: AxiosInstance
+}
+
+export type UseFetcherOpts<T> = {
   headers?: Record<string, string>
   disabled: boolean
-  initialValue?: string
+  initialValue?: T
 }
 
 export type FetcherOpts = AxiosRequestConfig
 
 export type FetcherProviderProps = {
   apiUrl: string
-  onUnauthorized?: () => Promise<any>
+  onUnauthorized?: () => Promise<void>
   getAccessToken: () => string | undefined
   fetcherOpts?: FetcherOpts
   children: React.ReactNode
 }
 
-export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
+export function useFetcher<T = any>(url: string, opts?: UseFetcherOpts<T>) {
   const { fetcher } = useContext(FetcherContext)
   const [isLoading, setLoading] = useState(true)
   const [isFetching, setFetching] = useState(false)
-  const [error, setError] = useState<any>(undefined)
-  const [data, setData] = useState<any>(opts?.initialValue)
+  const [error, setError] = useState<Error | undefined>(undefined)
+  const [data, setData] = useState<T | undefined>(opts?.initialValue)
 
   const controller = useRef<AbortController>(new AbortController())
   const fetchData = useRef(async (url: string) => {
@@ -35,7 +39,7 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
         headers: opts?.headers,
       })
       setData(response.data)
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
       setError(error)
     }

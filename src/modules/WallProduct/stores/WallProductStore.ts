@@ -14,12 +14,28 @@ export default class WallProductStore {
     makeAutoObservable(this)
     autoBind(this)
   }
+
+  name = "wallProductStore"
+
+  /** Products */
   products: Product[] | undefined
 
   nbProductsToDisplay = PAGE_SIZE
 
-  name = "wallProductStore"
+  get productsToDisplay() {
+    return this.products?.slice(0, this.nbProductsToDisplay) || []
+  }
 
+  addNextProductToDisplay() {
+    this.nbProductsToDisplay += PAGE_SIZE
+  }
+
+  setProducts(products: Product[]): void {
+    this.products = products
+    this.sortProducts(this.selectedSortOption.value)
+  }
+
+  /** Filters */
   filters: FilterRecord = {
     search: {
       name: "Recherche",
@@ -46,10 +62,6 @@ export default class WallProductStore {
     },
   }
 
-  sortOptions = SORT_OPTIONS
-
-  selectedSortOption = SORT_OPTIONS[0]
-
   get checkboxFiltersChoices() {
     return Object.values(this.filters)
       .filter((f) => f.type === "checkbox")
@@ -67,19 +79,6 @@ export default class WallProductStore {
 
   get colorFilterChoices() {
     return mapChoicesToState(this.filters.color.choices, this.filters.color.state)
-  }
-
-  get productsToDisplay() {
-    return this.products?.slice(0, this.nbProductsToDisplay) || []
-  }
-
-  addNextProductToDisplay() {
-    this.nbProductsToDisplay += PAGE_SIZE
-  }
-
-  setProducts(products: Product[]): void {
-    this.products = products
-    this.sortProducts(this.selectedSortOption.value)
   }
 
   setFilters(filters: FilterRecord) {
@@ -117,6 +116,11 @@ export default class WallProductStore {
     }
     console.log({ filters: JSON.stringify(this.filters) })
   }
+
+  /** Sort Products */
+  sortOptions = SORT_OPTIONS
+
+  selectedSortOption = SORT_OPTIONS[0]
 
   _sortFromLowToHigh() {
     this.products?.sort((a, b) => a.price - b.price)

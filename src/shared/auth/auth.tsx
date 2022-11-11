@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 
 export type AuthContextProps = {
   authConfig: AuthConfig
@@ -37,7 +45,7 @@ export const _buildAuthorizeUrl = (authConfig: AuthConfig): string => {
   return `${authConfig.domain}/authorize?redirect_uri=${encodeURIComponent(currentPath)}`
 }
 
-export const AuthContext = createContext<AuthContextProps>({} as any)
+export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
 export const useAuth = () => useContext(AuthContext)
 
@@ -84,7 +92,7 @@ export const AuthProvider = ({ authConfig, children }: AuthProviderProps) => {
   )
 }
 
-export const ProtectedRoute = ({ children }: any) => {
+export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const {
     auth: { accessToken, expires },
     authConfig,
