@@ -53,6 +53,14 @@ app.post("/authorize", async (req, res) => {
   
 })
 
+app.get("/users", verifyAuth, async (req, res) => {
+  
+  await sleep(3500)
+  const users = JSON.parse(await fs.promises.readFile(path.resolve(__dirname, "./users.json"), "utf-8"));
+
+  res.json(users)
+});
+
 app.get("/users/:id", verifyAuth, async (req, res) => {
   
   await sleep(3500)

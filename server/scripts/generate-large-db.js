@@ -40,15 +40,20 @@ const main = async () => {
     const randNbForYear = genRandNb(2018, 2023);
     const randNbForColor = genRandNb(0, COLORS.length - 1);
     const randNbForPrice = genRandNb(650, 1800);
+    const daysSinceLaunch = genRandNb(0, 600);
+    const sold = genRandNb(300, 30000);
     const hash = await encodeImageToBlurhash(path.resolve(__dirname, `../public/image_${i}.webp`))
 
     products.push({
+      id: i,
       name: generateRandomName(),
       brand: BRANDS[randNbForBrand],
       year: randNbForYear,
       color: COLORS[randNbForColor],
       price: randNbForPrice,
       link: `${SERVER_DOMAIN}/image_${i}.webp`,
+      daysSinceLaunch,
+      sold,
       hash
     });
   }

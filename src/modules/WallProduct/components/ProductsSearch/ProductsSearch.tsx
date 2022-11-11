@@ -3,9 +3,9 @@ import { observer } from "mobx-react-lite"
 
 import { useStore } from "@shared/state"
 import { useFetcher } from "@shared/fetcher"
+import { ProductsList } from "@lib/components/ProductsList"
 
 import Filters from "../Filters"
-import { ProductsList } from "../ProductsList"
 
 import { appendFiltersToUrl } from "../../helpers/helpers"
 import { FETCH_PRODUCT_URL, OfferType } from "../../config"

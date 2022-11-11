@@ -1,12 +1,11 @@
+import React, { Fragment } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { observer } from "mobx-react-lite"
 
-import React, { Fragment } from "react"
-
 import { HeaderContainer } from "./HeaderContainer"
-// import { ProductsListHeader } from "../ProductsListHeader"
 
-type NamedObj = { name: string }
+type NamedObj = { id: string | number }
+
 export type ProductsListProps<T extends NamedObj> = {
   products: Array<T>
   totalLength: number
@@ -19,7 +18,6 @@ export type ProductsListProps<T extends NamedObj> = {
 export const ProductsList = observer(
   <T extends NamedObj>({
     getNextProducts,
-    productType,
     products,
     renderProduct,
     Header,
@@ -40,7 +38,6 @@ export const ProductsList = observer(
     }
     return (
       <div style={{ paddingBottom: "50px" }}>
-        {/* <Header type={productType} totalLength={totalLength} displayedLength={products.length} /> */}
         {Header ? (
           <HeaderContainer>
             <Header />
@@ -65,7 +62,7 @@ export const ProductsList = observer(
             }}
           >
             {products.map((product) => (
-              <Fragment key={product.name}>{renderProduct(product)}</Fragment>
+              <Fragment key={product.id}>{renderProduct(product)}</Fragment>
             ))}
           </div>
         </InfiniteScroll>

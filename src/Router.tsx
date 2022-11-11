@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import React from "react"
 
 import { WallProductLayout, RenewalPage, AcquisitionPage } from "@modules/WallProduct"
+import { OtherProductsListPage } from "@modules/OtherProductsList"
+
 import { ProtectedRoute } from "@shared/auth"
 
 const Router: React.FC = () => (
@@ -19,6 +21,14 @@ const Router: React.FC = () => (
           />
           <Route path="/acquisition" element={<AcquisitionPage />} />
         </Route>
+        <Route
+          path="/other-products-list"
+          element={
+            <ProtectedRoute>
+              <OtherProductsListPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   </>

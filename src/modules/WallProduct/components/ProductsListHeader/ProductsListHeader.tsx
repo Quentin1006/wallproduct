@@ -1,15 +1,20 @@
+import { useCallback } from "react"
+
 import { useStore } from "@shared/state"
 
-import Select from "react-select"
+import Select, { SingleValue } from "react-select"
+import { SortOption } from "typings"
 
 export const ProductsListHeader = () => {
-  const { products, nbProductsToDisplay } = useStore("wallProductStore")
+  const { products, nbProductsToDisplay, sortOptions, selectedSortOption, selectSortOption } =
+    useStore("wallProductStore")
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ]
+  const handleSortChange = useCallback(
+    (newValue: SingleValue<SortOption>) => {
+      selectSortOption(newValue)
+    },
+    [selectSortOption]
+  )
 
   return (
     <>
@@ -20,7 +25,11 @@ export const ProductsListHeader = () => {
       </div>
 
       <div style={{ minWidth: "200px" }}>
-        <Select options={options} />
+        <Select
+          options={sortOptions}
+          defaultValue={selectedSortOption}
+          onChange={handleSortChange}
+        />
       </div>
     </>
   )
