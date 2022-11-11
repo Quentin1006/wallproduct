@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 import axios, { AxiosRequestConfig } from "axios"
-import { useAuth } from "../auth"
 
 export const FetcherContext = createContext({} as any)
 
@@ -49,8 +48,9 @@ export const useFetcher = (url: string, opts?: UseFetcherOpts) => {
       fetchData.current(url)
     }
 
+    const currentController = controller.current
     return () => {
-      isFetching && controller.current.abort()
+      isFetching && currentController.abort()
     }
   }, [])
 

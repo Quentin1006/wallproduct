@@ -1,3 +1,5 @@
+import localConfig from "config/local"
+
 export type Product = {
   id: string | number
   name: string
@@ -32,3 +34,11 @@ export type SortOption = {
   value: string
   label: string
 }
+
+export enum Menus {
+  ACQUISITION = "Acquisition",
+  RENEWAL = "Renouvellement",
+  OTHER_PRODUCT_LIST = "Other ProductList",
+}
+
+export type Config = typeof localConfig

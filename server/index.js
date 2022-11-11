@@ -8,7 +8,7 @@ const Store = require("./store");
 
 const app = express();
 
-const tokenStore = new Store({ expirationTimeInMin: 1 })
+const tokenStore = new Store({ expirationTimeInMin: 10 })
 
 const port = 8088;
 

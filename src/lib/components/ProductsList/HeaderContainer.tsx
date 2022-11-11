@@ -1,7 +1,12 @@
-import { useRef } from "react"
+import { CSSProperties, ReactNode, useRef } from "react"
 import { useStickyMenu } from "../../../modules/WallProduct/hooks/useStickyMenu"
 
-export const HeaderContainer = ({ children }: any) => {
+export type HeaderContainerProps = {
+  customStyle: CSSProperties
+  children: ReactNode
+}
+
+export const HeaderContainer = ({ children, customStyle }: any) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { position } = useStickyMenu(containerRef)
@@ -15,10 +20,12 @@ export const HeaderContainer = ({ children }: any) => {
           display: "flex",
           justifyContent: "space-between",
           backgroundColor: "#fff",
+          boxSizing: "border-box",
           width: "100%",
           // width: position === "fixed" ? `calc(100% - ${paddingSide * 2}px)` : "inherit",
           left: position === "fixed" ? "0px" : "inherit",
           boxShadow: position === "fixed" ? "0px 6px 11px -3px rgba(0,0,0,0.1)" : "none",
+          ...customStyle,
         }}
       >
         {children}

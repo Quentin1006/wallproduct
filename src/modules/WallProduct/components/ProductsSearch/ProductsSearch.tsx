@@ -91,6 +91,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
             productType="Téléphones"
             renderProduct={useRenderProduct}
             Header={ProductsListHeader}
+            headerStyle={{ padding: "15px" }}
           />
         </div>
       </div>

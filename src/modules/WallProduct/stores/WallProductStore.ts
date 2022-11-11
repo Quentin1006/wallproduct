@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx"
 import autoBind from "auto-bind"
 
-import type { FilterRecord, Product } from "typings"
+import type { Config, FilterRecord, Product } from "typings"
 import { hasFilters, mapChoicesToState } from "../helpers/helpers"
 import { PAGE_SIZE, SORT_OPTIONS } from "../config"
 
@@ -9,7 +9,7 @@ import { SortOption } from "typings"
 
 export default class WallProductStore {
   config
-  constructor(config: any) {
+  constructor(config: Config) {
     this.config = config
     makeAutoObservable(this)
     autoBind(this)
@@ -47,6 +47,7 @@ export default class WallProductStore {
   }
 
   sortOptions = SORT_OPTIONS
+
   selectedSortOption = SORT_OPTIONS[0]
 
   get checkboxFiltersChoices() {

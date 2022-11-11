@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useState } from "react"
 import { useStore } from "@shared/state"
 
 import CheckboxGroupFilter from "./CheckboxGroupFilter"

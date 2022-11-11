@@ -13,6 +13,8 @@ export type ProductsListProps<T extends NamedObj> = {
   getNextProducts: any
   renderProduct: (p: T) => React.ReactNode
   Header?: any
+  headerStyle?: React.CSSProperties
+  listStyle?: React.CSSProperties
 }
 
 export const ProductsList = observer(
@@ -22,6 +24,8 @@ export const ProductsList = observer(
     renderProduct,
     Header,
     totalLength,
+    headerStyle,
+    listStyle,
   }: ProductsListProps<T>) => {
     console.log("rendering ProductsList", products.length)
     console.log(
@@ -39,7 +43,7 @@ export const ProductsList = observer(
     return (
       <div style={{ paddingBottom: "50px" }}>
         {Header ? (
-          <HeaderContainer>
+          <HeaderContainer customStyle={headerStyle}>
             <Header />
           </HeaderContainer>
         ) : null}
@@ -59,6 +63,7 @@ export const ProductsList = observer(
             style={{
               display: "flex",
               flexWrap: "wrap",
+              ...listStyle,
             }}
           >
             {products.map((product) => (

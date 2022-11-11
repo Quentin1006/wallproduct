@@ -96,7 +96,7 @@ export const ProtectedRoute = ({ children }: any) => {
     if (!accessToken || (expires && expires < date)) {
       loginWithRedirect(authConfig)
     }
-  }, [accessToken, expires])
+  }, [accessToken, expires, authConfig])
 
   if (!accessToken) {
     return <></>
