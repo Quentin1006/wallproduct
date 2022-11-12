@@ -77,6 +77,10 @@ export const AuthProvider = ({ authConfig, children }: AuthProviderProps) => {
   )
 }
 
+const isExpired = (expires: number | undefined): boolean => {
+  return (expires || 0) < Date.now()
+}
+
 export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const {
     auth: { accessToken, expires },
@@ -85,13 +89,14 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     console.log("in ProtectedRoute > useEffect")
-    const date = Date.now()
-    if (!accessToken || (expires && expires < date)) {
+
+    console.log({ accessToken, expires, isExpired: isExpired(expires) })
+    if (!accessToken || isExpired(expires)) {
       loginWithRedirect(authConfig)
     }
   }, [accessToken, expires, authConfig])
 
-  if (!accessToken) {
+  if (!accessToken || isExpired(expires)) {
     return <></>
   }
 
