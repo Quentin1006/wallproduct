@@ -17,6 +17,7 @@ const Layout = observer(() => {
       (key) => (RouteMapping as any)[key] === pathname
     )
     selected && setSelectedMenu(selected)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

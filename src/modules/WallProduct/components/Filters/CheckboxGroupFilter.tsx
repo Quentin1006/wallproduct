@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export type CheckboxGroupFilter = {
+export type CheckboxGroupFilterProps = {
   groupName: string
   groupKey: string
   onUpdateFilter: (group: string, name: string, isChecked: boolean) => void
@@ -17,7 +17,7 @@ const CheckboxGroupFilter = ({
   groupKey,
   onUpdateFilter,
   nbShow = choices.length,
-}: CheckboxGroupFilter) => {
+}: CheckboxGroupFilterProps) => {
   const [hideChoices, setHideChoices] = useState(nbShow < choices.length)
 
   return (
@@ -47,7 +47,7 @@ const CheckboxGroupFilter = ({
       })}
       <div style={{ paddingTop: "10px" }}>
         <a
-          href=""
+          href=" #"
           onClick={(e) => {
             e.preventDefault()
             setHideChoices(!hideChoices)

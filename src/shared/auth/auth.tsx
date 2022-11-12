@@ -65,6 +65,7 @@ export const AuthProvider = ({ authConfig, children }: AuthProviderProps) => {
       })
       setIsCallRedirectProcessed(true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isCallbackRedirect && !isCallRedirectProcessed) {

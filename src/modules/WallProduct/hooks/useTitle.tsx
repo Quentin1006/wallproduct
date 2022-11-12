@@ -6,5 +6,5 @@ export const useTitle = (title: string) => {
 
   useEffect(() => {
     setTitle(title.toUpperCase())
-  }, [])
+  }, [title, setTitle])
 }

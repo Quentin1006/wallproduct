@@ -60,6 +60,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
       console.log({ urlWithFilters })
       refetch(urlWithFilters)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters])
 
   if (isError) {

@@ -10,13 +10,16 @@ export const useDebounce = ({ initialState, delay, onUpdateDebounce }: UseDeboun
   const [debounceValue, setDebounceValue] = useState(initialState)
   const timeoutId = useRef<ReturnType<typeof setTimeout>>()
 
-  const updateDebounce = useCallback((name: string, value: string) => {
-    clearTimeout(timeoutId.current)
-    setDebounceValue(value)
-    timeoutId.current = setTimeout(() => {
-      onUpdateDebounce(name, value)
-    }, delay)
-  }, [])
+  const updateDebounce = useCallback(
+    (name: string, value: string) => {
+      clearTimeout(timeoutId.current)
+      setDebounceValue(value)
+      timeoutId.current = setTimeout(() => {
+        onUpdateDebounce(name, value)
+      }, delay)
+    },
+    [onUpdateDebounce, delay]
+  )
 
   useEffect(() => {
     return () => {

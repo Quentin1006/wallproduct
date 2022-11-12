@@ -83,6 +83,7 @@ export function useFetcher<T = any>(url: string, opts?: UseFetcherOpts<T>) {
       })
       controller.current.abort()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return {

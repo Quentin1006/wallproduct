@@ -9,12 +9,15 @@ import TextInputFilter from "./TextInputFilter"
 export const Filters = observer(() => {
   const { filters, brandFilterChoices, colorFilterChoices, updateCheckboxFilter, updateFilter } =
     useStore("wallProductStore")
-  const [focused, setFocused] = useState(0)
+  const [, setFocused] = useState(0)
 
-  const useUpdateFilter = useCallback((label: string, value: string) => {
-    setFocused(0)
-    updateFilter(label, { state: value })
-  }, [])
+  const useUpdateFilter = useCallback(
+    (label: string, value: string) => {
+      setFocused(0)
+      updateFilter(label, { state: value })
+    },
+    [updateFilter]
+  )
 
   return (
     <div style={{ margin: "15px 20px" }}>
