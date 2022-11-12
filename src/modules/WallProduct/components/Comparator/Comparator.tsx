@@ -12,7 +12,7 @@ export const Comparator = observer(() => {
     if (shouldOpenOnListChange || shouldCloseOnListChange) {
       toggleComparator()
     }
-  }, [list])
+  }, [comparator.isOpen, list, toggleComparator])
 
   return (
     <div
@@ -41,7 +41,7 @@ export const Comparator = observer(() => {
           >
             <div>{product.name}</div>
             <div>
-              <img src={product.link} height="50px" />
+              <img src={product.link} height="50px" alt="product link" />
             </div>
             <button onClick={() => removeProduct(product.name)}>X</button>
           </div>
