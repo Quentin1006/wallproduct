@@ -97,6 +97,7 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   }, [accessToken, expires, authConfig])
 
   if (!accessToken || isExpired(expires)) {
+    loginWithRedirect(authConfig)
     return <></>
   }
 

@@ -28,7 +28,8 @@ export default class WallProductStore {
   }
 
   addNextProductToDisplay() {
-    this.nbProductsToDisplay += PAGE_SIZE
+    const nextNbProductToDisplay = this.nbProductsToDisplay + PAGE_SIZE
+    this.nbProductsToDisplay = Math.min(nextNbProductToDisplay, this.products?.length || 0)
   }
 
   setProducts(products: Product[]): void {
