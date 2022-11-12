@@ -29,7 +29,7 @@ export const ConfigProvider = ({ children }: ConfigProviderProps) => {
 
   useEffect(() => {
     const fetchConfig = async () => {
-      const response = await fetch("/external-config.json")
+      const response = await fetch(`${process.env.PUBLIC_URL}/external-config.json`)
       const externalConfig: ExternalConfig = await response.json()
       setConfig({
         ...local,
