@@ -5,6 +5,8 @@ stages:
 build:
   image: node:16
   stage: build
+  variables:
+    PUBLIC_URL: https://quentin.sahal.gitlab.io/wallproduct
   script:
     - npm install --legacy-peer-deps
     - npm run build
