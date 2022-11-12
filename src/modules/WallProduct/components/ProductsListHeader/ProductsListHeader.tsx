@@ -29,7 +29,7 @@ export const ProductsListHeader = () => {
           options={sortOptions}
           defaultValue={selectedSortOption}
           onChange={handleSortChange}
-          placeholder={"Trier Par"}
+          placeholder="Trier Par"
         />
       </div>
     </>

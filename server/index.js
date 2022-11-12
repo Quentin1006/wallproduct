@@ -72,7 +72,7 @@ app.get("/users/:id", verifyAuth, async (req, res) => {
 });
 
 app.get("/products", async (req, res) => {
-  await sleep(300)
+  await sleep(4000)
   const query = req.query;
   if (Object.keys(query).length === 0) {
     res.json({ products: db });

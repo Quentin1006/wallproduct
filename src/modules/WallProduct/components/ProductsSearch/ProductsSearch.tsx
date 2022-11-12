@@ -43,6 +43,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
     refetch,
   } = useFetcher(FETCH_PRODUCT_URL(), {
     disabled: false,
+    key: "fetch_product" + String(Math.round(Math.random() * 10000)),
   })
 
   // Fill up the store with fetched products

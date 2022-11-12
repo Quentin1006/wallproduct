@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react"
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios"
 
 export const FetcherContext = createContext<FetcherContextProps>({} as FetcherContextProps)
@@ -10,6 +10,7 @@ export type FetcherContextProps = {
 export type UseFetcherOpts<T> = {
   headers?: Record<string, string>
   disabled: boolean
+  key?: string
   initialValue?: T
 }
 
@@ -26,7 +27,7 @@ export type FetcherProviderProps = {
 export function useFetcher<T = any>(url: string, opts?: UseFetcherOpts<T>) {
   const { fetcher } = useContext(FetcherContext)
   const [isLoading, setLoading] = useState(true)
-  const [isFetching, setFetching] = useState(false)
+  const [isFetching, setFetching] = useState<any>(false)
   const [error, setError] = useState<Error | undefined>(undefined)
   const [data, setData] = useState<T | undefined>(opts?.initialValue)
 
@@ -34,27 +35,53 @@ export function useFetcher<T = any>(url: string, opts?: UseFetcherOpts<T>) {
   const fetchData = useRef(async (url: string) => {
     try {
       setFetching(true)
+
+      console.log("fetcher", "just before fetching -> isFetching", opts?.key, {
+        isFetching: JSON.stringify(isFetching),
+      })
       const response = await fetcher.get(url, {
         signal: controller.current.signal,
         headers: opts?.headers,
       })
-      setData(response.data)
+      response?.data && setData(response.data)
     } catch (error: any) {
       console.log(error)
       setError(error)
     }
     setLoading(false)
     setFetching(false)
+
+    console.log("fetcher", "after fetching -> isFetching", opts?.key, {
+      isFetching: JSON.stringify(isFetching),
+    })
   })
 
+  const refetch = useCallback(
+    (url: string) => {
+      console.log("fetcher", "in refetch", { isFetching })
+      if (isFetching) {
+        controller.current.abort()
+        controller.current = new AbortController()
+      }
+      fetchData.current(url)
+    },
+    [isFetching]
+  )
+
   useEffect(() => {
+    console.log("fetcher", "at start of useEffect -> isFetching", opts?.key, {
+      isFetching: JSON.stringify(isFetching),
+    })
+
     if (!opts?.disabled) {
       fetchData.current(url)
     }
 
-    const currentController = controller.current
     return () => {
-      isFetching && currentController.abort()
+      console.log("fetcher", "aborting ->isFetching", opts?.key, {
+        isFetching: JSON.stringify(isFetching),
+      })
+      controller.current.abort()
     }
   }, [])
 
@@ -63,7 +90,7 @@ export function useFetcher<T = any>(url: string, opts?: UseFetcherOpts<T>) {
     isError: Boolean(error),
     isLoading,
     data,
-    refetch: fetchData.current,
+    refetch,
   }
 }
 
@@ -90,7 +117,7 @@ export const FetcherProvider = ({
       return response
     },
     (error) => {
-      if (error.response.status === 401) {
+      if (error?.response?.status === 401) {
         onUnauthorized?.()
       }
     }

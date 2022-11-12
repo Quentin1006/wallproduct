@@ -13,7 +13,7 @@ const TextInputFilter = ({ filterState, name, onUpdateFilter }: TextInputFilterP
 
   const { debounceValue, updateDebounce } = useDebounce({
     initialState: "",
-    delay: 200,
+    delay: 500,
     onUpdateDebounce: onUpdateFilter,
   })
 
