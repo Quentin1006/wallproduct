@@ -1,11 +1,11 @@
 import { ProductsList } from "@lib/components/ProductsList"
 import { useFetcher } from "@shared/fetcher"
 
-import { UserCard } from "../components/UserCard"
-import { FETCH_USERS_URL } from "../config"
+import { UserCard } from "./components/UserCard"
+import { FETCH_USERS_URL } from "./config"
 
 import type { User } from "typings"
-import { Header } from "../components/Header"
+import { Header } from "./components/Header"
 
 const OtherProductsListPage = () => {
   const { isError, data, isLoading } = useFetcher(FETCH_USERS_URL(), {
