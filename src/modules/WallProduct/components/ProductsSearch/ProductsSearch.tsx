@@ -23,7 +23,7 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
     useStore("wallProductStore")
   const { list } = useStore("comparatorStore")
 
-  const useRenderProduct = useCallback(
+  const renderProduct = useCallback(
     (p: Product) => {
       const isInComparator = list.some((element) => element.name === p.name)
       return <ProductCard product={p} isInComparator={isInComparator} />
@@ -31,7 +31,11 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
     [list]
   )
 
-  const useGetNextProducts = useCallback(() => {
+  /**
+   * We already store all the existing products,
+   * by increasing the length of the products to display we simulate api call
+   */
+  const getNextProducts = useCallback(() => {
     addNextProductToDisplay()
     return productsToDisplay
   }, [addNextProductToDisplay, productsToDisplay])
@@ -89,9 +93,9 @@ const ProductsSearch = observer(({ type }: ProductsSearchProps) => {
           <ProductsList
             totalLength={products.length}
             products={productsToDisplay}
-            getNextProducts={useGetNextProducts}
+            getNextProducts={getNextProducts}
             productType="Téléphones"
-            renderProduct={useRenderProduct}
+            renderProduct={renderProduct}
             Header={ProductsListHeader}
             headerStyle={{ padding: "15px" }}
           />

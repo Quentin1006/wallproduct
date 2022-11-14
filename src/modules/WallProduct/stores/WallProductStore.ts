@@ -1,12 +1,17 @@
 import { makeAutoObservable } from "mobx"
 import autoBind from "auto-bind"
 
-import type { FilterRecord, Product } from "typings"
 import { hasFilters, mapChoicesToState } from "../helpers/helpers"
 import { PAGE_SIZE, SORT_OPTIONS } from "../config"
 
-import { SortOption } from "typings"
-import { MergedConfig } from "config"
+import type { FilterRecord, Product, SortOption } from "typings"
+import type { MergedConfig } from "config"
+
+export enum SortCriteria {
+  BEST_SELLER = "meilleures_ventes",
+  INCREASING_PRICE = "prix_croissants",
+  NEWEST = "nouveautes",
+}
 
 export default class WallProductStore {
   config
@@ -146,13 +151,13 @@ export default class WallProductStore {
 
   sortProducts(criteria: string) {
     switch (criteria) {
-      case "meilleures_ventes":
+      case SortCriteria.BEST_SELLER:
         this._sortByBestSells()
         break
-      case "prix_croissants":
+      case SortCriteria.INCREASING_PRICE:
         this._sortFromLowToHigh()
         break
-      case "nouveautes":
+      case SortCriteria.NEWEST:
         this._sortByNewest()
         break
       default:

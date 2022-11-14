@@ -1,3 +1,5 @@
+import type { SortCriteria } from "@modules/WallProduct/stores/WallProductStore"
+
 export type Product = {
   id: string | number
   name: string
@@ -29,7 +31,7 @@ export type Filter = {
 export type FilterRecord = Record<string, Filter>
 
 export type SortOption = {
-  value: string
+  value: SortCriteria
   label: string
 }
 

@@ -3,7 +3,7 @@ import { useCallback } from "react"
 import { useStore } from "@shared/state"
 
 import Select, { SingleValue } from "react-select"
-import { SortOption } from "typings"
+import type { SortOption } from "typings"
 
 export const ProductsListHeader = () => {
   const { products, nbProductsToDisplay, sortOptions, selectedSortOption, selectSortOption } =
