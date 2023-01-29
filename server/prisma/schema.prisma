@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = "postgresql://postgres:postgres@localhost:5432/db"
+}
+
+model products {
+  id              BigInt @id(map: "products_id")
+  name            String
+  brand           String
+  year            Int
+  color           String
+  price           Int
+  link            String
+  daysSinceLaunch Int
+  sold            Int
+  hash            String
+}
+
+model users {
+  id         String @id(map: "users_id") @db.VarChar
+  first_name String @db.VarChar
+  last_name  String @db.VarChar
+  email      String @db.VarChar
+  gender     String @db.VarChar
+}

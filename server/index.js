@@ -5,8 +5,10 @@ const bodyParser = require('body-parser')
 const fs = require("fs");
 const path = require("path");
 const Store = require("./store");
+const { PrismaClient } = require("@prisma/client")
 
 const app = express();
+const prisma = new PrismaClient()
 
 const tokenStore = new Store({ expirationTimeInMin: 1 })
 
@@ -57,6 +59,13 @@ app.get("/users", verifyAuth, async (req, res) => {
   
   await sleep(3500)
   const users = JSON.parse(await fs.promises.readFile(path.resolve(__dirname, "./users.json"), "utf-8"));
+
+  res.json(users)
+});
+
+app.get("/v2/users", verifyAuth, async (req, res) => {
+  
+  await prisma.
 
   res.json(users)
 });
