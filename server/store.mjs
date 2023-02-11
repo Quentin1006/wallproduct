@@ -1,4 +1,4 @@
-const uuid = require("uuid")
+import { v4 as uuidv4 } from "uuid"
 
 const users = [{
   id: 1,
@@ -27,7 +27,7 @@ class Store {
   }
 
   createTokenForUser(id) {
-    const generatedToken = `at-${uuid.v4()}`
+    const generatedToken = `at-${uuidv4()}`
     const tokenInfos = {
       id,
       token: generatedToken,
@@ -44,4 +44,4 @@ class Store {
   }
 }
 
-module.exports = Store
+export default Store
