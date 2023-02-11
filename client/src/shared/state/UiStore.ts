@@ -1,3 +1,4 @@
+import autoBind from "auto-bind";
 import { makeAutoObservable } from "mobx";
 
 type ModalOpts = {
@@ -23,6 +24,7 @@ export default class UiStore {
       this.setTitle = this.setTitle.bind(this)
       
       makeAutoObservable(this)
+      autoBind(this)
     }
 
     setModal(isOpen: boolean, content: string = "", title: string = "") {

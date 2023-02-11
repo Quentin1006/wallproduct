@@ -5,6 +5,7 @@ import { PAGE_SIZE, SORT_OPTIONS } from "../config"
 
 import type { FilterRecord, Product, SortOption } from "typings"
 import type { MergedConfig } from "config"
+import autoBind from "auto-bind"
 
 export enum SortCriteria {
   BEST_SELLER = "meilleures_ventes",
@@ -17,6 +18,7 @@ export default class WallProductStore {
   constructor(config: MergedConfig) {
     this.config = config
     makeAutoObservable(this)
+    autoBind(this)
   }
 
   name = "wallProductStore"

@@ -6,7 +6,7 @@ import { ProtectedRoute } from "@shared/auth"
 import MainLayout from "./Layout"
 import { Menus } from "./typings"
 
-const RenewalPage = lazy(() => import("@modules/WallProduct/RenewalPage"))
+const RenewalPage = lazy(() => import("./modules/WallProduct/RenewalPage"))
 const AcquisitionPage = lazy(() => import("@modules/WallProduct/AcquisitionPage"))
 const OtherProductsListPage = lazy(() => import("@modules/OtherProductsList/OtherProductsListPage"))
 

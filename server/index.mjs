@@ -31,7 +31,7 @@ const tokenStore = new Store({ expirationTimeInMin: 1 })
 const port = 8088;
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "http://localhost:5173"],
 };
 
 const db = {}
