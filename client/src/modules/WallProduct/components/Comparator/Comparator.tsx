@@ -12,7 +12,7 @@ export const Comparator = observer(() => {
     if (shouldOpenOnListChange || shouldCloseOnListChange) {
       toggleComparator()
     }
-  }, [comparator.isOpen, list, toggleComparator])
+  }, [list, toggleComparator])
 
   return (
     <div

@@ -1,4 +1,4 @@
-// import LazyLoad from "react-lazy-load"
+import LazyLoad from "react-lazy-load"
 import type { Product } from "typings"
 import { useStore } from "@shared/state"
 import { observer } from "mobx-react-lite"
@@ -37,7 +37,7 @@ export const ProductCard = observer(({ product, isInComparator }: ProductProps) 
       <div>Modele : {product.name}</div>
       <div>Marque : {product.brand}</div>
       <div style={{ margin: "15px 5%" }}>
-        {/* <LazyLoad offset={300}> */}
+        <LazyLoad offset={300}>
           <OptimizedImage
             srcSet={[]}
             src={product.link}
@@ -46,7 +46,7 @@ export const ProductCard = observer(({ product, isInComparator }: ProductProps) 
             width={120}
             height={180}
           />
-        {/* </LazyLoad> */}
+        </LazyLoad>
       </div>
       <div>Vendu : {product.sold}</div>
       <div>Prix : {product.price} €</div>

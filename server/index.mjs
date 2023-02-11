@@ -73,14 +73,6 @@ app.post("/authorize", async (req, res) => {
 
 app.get("/users", verifyAuth, async (req, res) => {
   
-  await sleep(3500)
-  const users = JSON.parse(await fs.readFile(path.resolve(__dirname, "./users.json"), "utf-8"));
-
-  res.json(users)
-});
-
-app.get("/v2/users", verifyAuth, async (req, res) => {
-  console.log("reaching v2")
   const users = await prisma.user.findMany({})
   res.json(users)
 });
@@ -96,10 +88,13 @@ app.get("/products", async (req, res) => {
   const { search, brand, year, color } = req.query;
   const searchWhere = search ? { OR: [{ name: { contains: search, mode: "insensitive" }}, { brand: { contains: search, mode: "insensitive" }}]} : {}
   
-  
+  const brandWhere = brand ? { brand: { in: brand.split(",")} } : {}
+  const colorWhere = color ? { color: { in: color.split(",")} } : {} 
+
+  console.log({ brandWhere: JSON.stringify(brandWhere) })
   const products = await prisma.product.findMany({
     where: 
-      { ...searchWhere, brand: { startsWith: brand, mode: "insensitive" }, year: { gte: Number(year || 0) }, color: { equals: color}}
+      { ...searchWhere, year: { gte: Number(year || 0) }, ...brandWhere, ...colorWhere}
   })
   res.json({products})
 

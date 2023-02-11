@@ -19,9 +19,9 @@ export default class UiStore {
     selectedMenu = ""
     constructor(config: any) {
       this.config = config
-      this.toggleComparator = this.toggleComparator.bind(this)
-      this.setModal = this.setModal.bind(this)
-      this.setTitle = this.setTitle.bind(this)
+      // this.toggleComparator = this.toggleComparator.bind(this)
+      // this.setModal = this.setModal.bind(this)
+      // this.setTitle = this.setTitle.bind(this)
       
       makeAutoObservable(this)
       autoBind(this)
