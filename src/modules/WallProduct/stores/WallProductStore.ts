@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx"
-import autoBind from "auto-bind"
 
 import { hasFilters, mapChoicesToState } from "../helpers/helpers"
 import { PAGE_SIZE, SORT_OPTIONS } from "../config"
@@ -18,7 +17,6 @@ export default class WallProductStore {
   constructor(config: MergedConfig) {
     this.config = config
     makeAutoObservable(this)
-    autoBind(this)
   }
 
   name = "wallProductStore"

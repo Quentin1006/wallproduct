@@ -24,3 +24,4 @@ CREATE TABLE "users" (
 
     CONSTRAINT "users_id" PRIMARY KEY ("id")
 );
+

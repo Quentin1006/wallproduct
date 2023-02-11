@@ -7,8 +7,8 @@ datasource db {
   url      = "postgresql://postgres:postgres@localhost:5432/db"
 }
 
-model products {
-  id              BigInt @id(map: "products_id")
+model Product {
+  id              Int    @id @default(autoincrement())
   name            String
   brand           String
   year            Int
@@ -18,12 +18,29 @@ model products {
   daysSinceLaunch Int
   sold            Int
   hash            String
+
+  @@unique([name, brand])
 }
 
-model users {
-  id         String @id(map: "users_id") @db.VarChar
-  first_name String @db.VarChar
-  last_name  String @db.VarChar
-  email      String @db.VarChar
-  gender     String @db.VarChar
+model User {
+  id         String    @id @default(uuid())
+  first_name String
+  last_name  String
+  email      String    @unique
+  gender     String
+  contents   Content[]
+}
+
+model Content {
+  id       String    @id @default(uuid())
+  keywords Keyword[]
+  text     String
+  authorId String
+  author   User      @relation(fields: [authorId], references: [id])
+}
+
+model Keyword {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  contents Content[]
 }

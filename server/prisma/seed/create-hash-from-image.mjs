@@ -1,7 +1,7 @@
-const { encode } = require("blurhash")
-const sharp = require("sharp")
+import { encode } from "blurhash"
+import sharp from "sharp"
 
-exports.encodeImageToBlurhash = (path) =>
+export const encodeImageToBlurhash = (path) =>
   new Promise((resolve, reject) => {
     sharp(path)
       .raw()
