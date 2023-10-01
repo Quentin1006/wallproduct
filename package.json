@@ -33,8 +33,6 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "server:start": "node server/index.mjs",
-    "server:dev": "nodemon server/index.mjs",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "craco start",
     "build": "craco build",
